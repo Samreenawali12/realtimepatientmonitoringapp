@@ -7,7 +7,7 @@ import 'package:velocity_x/velocity_x.dart';
 import '../../screens/signInScreen.dart';
 
 class ChangePassword extends StatefulWidget {
-  ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -31,10 +31,10 @@ class _ChangePasswordState extends State<ChangePassword> {
       FirebaseAuth.instance.signOut();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.orangeAccent,
           content: Text(
             'Your Password has been Changed. Login again !',
@@ -50,11 +50,11 @@ class _ChangePasswordState extends State<ChangePassword> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           color: context.accentColor,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: Text(
+        title: const Text(
           "Update Your Password",
           style: TextStyle(
               fontSize: 20, fontWeight: FontWeight.bold, color: Colors.white),
@@ -64,10 +64,10 @@ class _ChangePasswordState extends State<ChangePassword> {
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: ListView(children: [
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
@@ -89,7 +89,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 cursorColor: Colors.indigo,
                 style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.mail_outline,
                     color: Colors.indigo,
                   ),
@@ -100,14 +100,14 @@ class _ChangePasswordState extends State<ChangePassword> {
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   fillColor: Colors.indigo.withOpacity(0.3),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                    borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 keyboardType: TextInputType.visiblePassword,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             MaterialButton(
@@ -129,11 +129,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                   });
                 }
               },
-              child: Text(
+              color: Colors.indigo,
+              child: const Text(
                 'Change Password',
                 style: TextStyle(fontSize: 18.0, color: Colors.white),
               ),
-              color: Colors.indigo,
             ),
           ]),
         ),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AdminCompletedRequests extends StatefulWidget {
-  AdminCompletedRequests({Key? key}) : super(key: key);
+  const AdminCompletedRequests({Key? key}) : super(key: key);
 
   @override
   State<AdminCompletedRequests> createState() => _AdminCompletedRequestsState();
@@ -19,7 +19,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
   String message = "";
   String rtime = "";
   void getRequestData() async {
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         .where('R_Status', isEqualTo: "completed")
         .snapshots()
@@ -65,9 +65,9 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!.docs.length > 0) {
+                      if (snapshot.data!.docs.isNotEmpty) {
                         final RequestDocs = snapshot.data!.docs;
-                        return Container(
+                        return SizedBox(
                           width: size.width / 1,
                           height: size.height * 0.9,
                           child: ListView.builder(
@@ -75,13 +75,13 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                               itemBuilder: (context, index) {
                                 final DocumentSnapshot documentSnapshot =
                                     RequestDocs[index];
-                                return Container(
+                                return SizedBox(
                                   height: size.height / 4,
                                   width: context.screenWidth,
                                   child: Card(
                                     color: context.cardColor,
                                     //margin: const EdgeInsets.all(10),
-                                    margin: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(
                                         horizontal: 5, vertical: 5),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22),
@@ -111,7 +111,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["D_id"].toString()}"
+                                                      RequestDocs[index]["D_id"].toString()
                                                           .text
                                                           .color(context
                                                               .accentColor)
@@ -137,7 +137,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["D_Name"].toString()}"
+                                                      RequestDocs[index]["D_Name"].toString()
                                                           .text
                                                           .semiBold
                                                           .color(context
@@ -163,7 +163,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["P_id"].toString()}"
+                                                      RequestDocs[index]["P_id"].toString()
                                                           .text
                                                           .color(context
                                                               .accentColor)
@@ -189,7 +189,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["P_Name"].toString()}"
+                                                      RequestDocs[index]["P_Name"].toString()
                                                           .text
                                                           .semiBold
                                                           .color(context
@@ -216,7 +216,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Status"].toString()}"
+                                                      RequestDocs[index]["R_Status"].toString()
                                                           .text
                                                           .semiBold
                                                           .color(context
@@ -242,7 +242,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Time"].toString()}"
+                                                      RequestDocs[index]["R_Time"].toString()
                                                           .text
                                                           .color(context
                                                               .accentColor)
@@ -267,7 +267,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_EndTime"].toString()}"
+                                                      RequestDocs[index]["R_EndTime"].toString()
                                                           .text
                                                           .color(context
                                                               .accentColor)
@@ -297,7 +297,7 @@ class _AdminCompletedRequestsState extends State<AdminCompletedRequests> {
                                 left: size.width / 5,
                                 top: size.height / 1.5,
                               )),
-                              Text(
+                              const Text(
                                 "No Completed History",
                                 style: TextStyle(
                                     fontSize: 20,

@@ -1,12 +1,11 @@
 import 'package:dbtest/screens/doctor/signup_D.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class DoctorPage extends StatefulWidget {
-  DoctorPage({Key? key}) : super(key: key);
+  const DoctorPage({Key? key}) : super(key: key);
 
   @override
   State<DoctorPage> createState() => _DoctorPageState();
@@ -135,9 +134,9 @@ class _DoctorPageState extends State<DoctorPage> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+                    children: const [
                       Padding(
-                        padding: const EdgeInsets.only(left: 15),
+                        padding: EdgeInsets.only(left: 15),
                         child: Text(
                           "Gender",
                           style: TextStyle(
@@ -149,7 +148,7 @@ class _DoctorPageState extends State<DoctorPage> {
                     ],
                   ),
                   RadioListTile(
-                    title: Text("Male"),
+                    title: const Text("Male"),
                     value: "Male",
                     groupValue: radiovalue,
                     onChanged: (value) {
@@ -161,7 +160,7 @@ class _DoctorPageState extends State<DoctorPage> {
                     },
                   ),
                   RadioListTile(
-                    title: Text("Female"),
+                    title: const Text("Female"),
                     value: "Female",
                     groupValue: radiovalue,
                     onChanged: (value) {
@@ -414,7 +413,7 @@ class _DoctorPageState extends State<DoctorPage> {
                   final DocumentSnapshot documentSnapshot = DoctorDocs[index];
                   return Card(
                     //margin: const EdgeInsets.all(10),
-                    margin: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22)),
                     //elevation: 5,
@@ -486,7 +485,7 @@ class _DoctorPageState extends State<DoctorPage> {
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.push(
-                context, MaterialPageRoute(builder: (context) => signUpDoc()));
+                context, MaterialPageRoute(builder: (context) => const signUpDoc()));
           },
           child: const Icon(Icons.add),
         ),

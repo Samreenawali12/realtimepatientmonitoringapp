@@ -1,25 +1,26 @@
+import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 
 class ModelTester extends StatefulWidget {
+  const ModelTester({super.key});
+
   @override
   _ModelTesterState createState() => _ModelTesterState();
 }
 
 class _ModelTesterState extends State<ModelTester> {
   late Interpreter _interpreter;
-  List<double> _input = [0.0, 98.0, 60.0];
+  final List<double> _input = [double.parse(temprature), double.parse(oxygen), double.parse(BPM)];
   late List<List<double>> _output;
   bool _isLoaded = false;
 
   @override
   void initState() {
     super.initState();
+    getUpdatedVitals();
     _loadModel();
   }
-  // getVitals() async{
-  // retrieval code
-  // }
 
   Future<void> _loadModel() async {
     try {
@@ -46,14 +47,14 @@ class _ModelTesterState extends State<ModelTester> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Result'),
+              title: const Text('Result'),
               content: Text(message),
               actions: <Widget>[
                 ElevatedButton(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -71,15 +72,15 @@ class _ModelTesterState extends State<ModelTester> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("hoja sim sim"),
+        title: const Text("hoja sim sim"),
       ),
       body: Center(
         child: _isLoaded
             ? ElevatedButton(
                 onPressed: _runInference,
-                child: Text('Predict'),
+                child: const Text('Predict'),
               )
-            : CircularProgressIndicator(),
+            : const CircularProgressIndicator(),
       ),
     );
   }

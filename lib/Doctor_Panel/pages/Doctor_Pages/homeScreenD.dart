@@ -42,6 +42,7 @@ class _HomeScreenDocState extends State<HomeScreenDoc> {
     });
   }
 
+  @override
   void initState() {
     getData();
     super.initState();
@@ -78,12 +79,12 @@ class _HomeScreenDocState extends State<HomeScreenDoc> {
           ),
           Center(
             child: ElevatedButton(
-              child: Text("Log Out"),
+              child: const Text("Log Out"),
               onPressed: () {
                 FirebaseAuth.instance.signOut();
                 print('Signed out');
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignInScreen()));
+                    MaterialPageRoute(builder: (context) => const SignInScreen()));
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(

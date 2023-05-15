@@ -2,10 +2,9 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Admin_Panel/Dashboard.dart';
+import 'package:dbtest/constantfiles.dart';
 import 'package:dbtest/screens/patient/signup_p.dart';
-import 'package:dbtest/screens/signUpScreen.dart';
 import 'package:dbtest/reuseable_widgets/reuseable_widget.dart';
-import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -49,7 +48,6 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     getrememberpassword();
     super.initState();
   }
@@ -58,15 +56,18 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
+        // width: MediaQuery.of(context).size.width,
+        // height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: SingleChildScrollView(
           child: Padding(
             padding: EdgeInsets.fromLTRB(
-                20, MediaQuery.of(context).size.height * 0.1, 20, 0),
+                20,
+                MediaQuery.of(context).size.height * 0.1,
+                20,
+                MediaQuery.of(context).size.height * 0.1),
             child: Column(
               children: [
                 logoWidget("assets/images_a/login.png"),
@@ -92,7 +93,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.mail_outline,
                       color: Colors.indigo,
                     ),
@@ -103,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -135,7 +136,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.mail_outline,
                       color: Colors.indigo,
                     ),
@@ -146,7 +147,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -158,7 +159,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 Row(
                   children: <Widget>[
                     Checkbox(
-                      value: this.value,
+                      value: value,
                       onChanged: (value) {
                         setState(() {
                           this.value = value!;
@@ -211,6 +212,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         "P_Password": _passwordTextController.text,
                         "status": "Online",
                       });
+                      pid = patients.docs[0]['P_id'];
+                      Pname = patients.docs[0]['P_Name'];
+
                       PHandleToken().insertToken();
                       Navigator.pushReplacement(
                           context,
@@ -225,9 +229,11 @@ class _SignInScreenState extends State<SignInScreen> {
                         "D_Password": _passwordTextController.text,
                         "status": "Online",
                       });
+                      Did = doctors.docs[0]['D_id'];
+                      Dname = doctors.docs[0]['D_Name'];
                       DHandleToken().insertToken();
                       Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => DocHome()));
+                          MaterialPageRoute(builder: (context) => const DocHome()));
                     } else if (admins.docs.isNotEmpty) {
                       await FirebaseFirestore.instance
                           .collection("Admin")
@@ -237,7 +243,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => A_DashboardPage()));
+                              builder: (context) => const A_DashboardPage()));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

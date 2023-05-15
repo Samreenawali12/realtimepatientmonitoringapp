@@ -1,14 +1,9 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/D_Session.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:http/http.dart';
-import '../../../Patient_Panel/pages/P_session.dart';
 
 class AdminAcceptedRequests extends StatefulWidget {
-  AdminAcceptedRequests({Key? key}) : super(key: key);
+  const AdminAcceptedRequests({Key? key}) : super(key: key);
 
   @override
   State<AdminAcceptedRequests> createState() => _AdminAcceptedRequestsState();
@@ -24,7 +19,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
   String message = "";
   String rtime = "";
   void getRequestData() async {
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         .where('R_Status', isEqualTo: "Accepted")
         .snapshots()
@@ -70,9 +65,9 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                         if (snapshot.data!.docs.length > 0) {
+                         if (snapshot.data!.docs.isNotEmpty) {
                       final RequestDocs = snapshot.data!.docs;
-                      return Container(
+                      return SizedBox(
                         width: size.width / 1,
                         height: size.height * 0.7,
                         child: ListView.builder(
@@ -80,13 +75,13 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                             itemBuilder: (context, index) {
                               final DocumentSnapshot documentSnapshot =
                                   RequestDocs[index];
-                              return Container(
+                              return SizedBox(
                                 height: size.height / 5.5,
                                 width: context.screenWidth,
                                 child: Card(
                                   color: context.cardColor,
                                   //margin: const EdgeInsets.all(10),
-                                  margin: EdgeInsets.symmetric(
+                                  margin: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(22),
@@ -117,7 +112,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["D_id"].toString()}"
+                                                    RequestDocs[index]["D_id"].toString()
                                                         .text
                                                         .xl
                                                         .semiBold
@@ -146,7 +141,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["D_Name"].toString()}"
+                                                    RequestDocs[index]["D_Name"].toString()
                                                         .text
                                                         .xl
                                                         .semiBold
@@ -175,7 +170,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["P_id"].toString()}"
+                                                    RequestDocs[index]["P_id"].toString()
                                                         .text
                                                         .xl
                                                         .semiBold
@@ -204,7 +199,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["P_Name"].toString()}"
+                                                    RequestDocs[index]["P_Name"].toString()
                                                         .text
                                                         .xl
                                                         .semiBold
@@ -233,7 +228,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["R_Status"].toString()}"
+                                                    RequestDocs[index]["R_Status"].toString()
                                                         .text
                                                         .xl
                                                         .semiBold
@@ -262,7 +257,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["R_Time"].toString()}"
+                                                    RequestDocs[index]["R_Time"].toString()
                                                         .text
                                                         .medium
                                                         //
@@ -291,7 +286,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                                 ),
                                                 Column(
                                                   children: [
-                                                    "${RequestDocs[index]["R_EndTime"].toString()}"
+                                                    RequestDocs[index]["R_EndTime"].toString()
                                                         .text
                                                         .medium
                                                         //
@@ -323,7 +318,7 @@ class _AdminAcceptedRequestsState extends State<AdminAcceptedRequests> {
                                 left: size.width / 5,
                                 top: size.height / 1.5,
                               )),
-                              Text(
+                              const Text(
                                 "No Accepted History",
                                 style: TextStyle(
                                     fontSize: 20,

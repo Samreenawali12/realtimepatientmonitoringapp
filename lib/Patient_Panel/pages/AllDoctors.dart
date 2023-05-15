@@ -1,26 +1,27 @@
 import 'dart:convert';
-import 'package:dbtest/MyModelTester.dart';
 import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:dbtest/Patient_Panel/pages/doctorProfile.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:http/http.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'local_notification.dart';
 
 class AllDoctorsPage extends StatefulWidget {
-  AllDoctorsPage({Key? key}) : super(key: key);
-
+  const AllDoctorsPage({Key? key}) : super(key: key);
   @override
   State<AllDoctorsPage> createState() => _AllDoctorsPageState();
 }
 
 class _AllDoctorsPageState extends State<AllDoctorsPage> {
   late Interpreter _interpreter;
-  List<double> _input = [0.0, 95.0, 60.0];
+  final List<double> _input = [
+    double.parse(oxygen),
+    double.parse(temprature),
+    double.parse(BPM)
+  ];
   late List<List<double>> _output;
   bool _isLoaded = false;
 
@@ -50,8 +51,8 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
   @override
   void initState() {
     getData();
+    getUpdatedVitals();
     _loadModel();
-
     super.initState();
     counter = counter++;
   }
@@ -70,25 +71,25 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
       final docId = DoctorDocs["D_id"].toString();
       //send push notification
       await sendNotifcation(
-          title: "$name",
+          title: name,
           BODY: "This Patient has Requested for assistance",
           Token: recieverfcmToken,
           con: condition);
       //store request data in DB
       final currentTime = DateTime.now().millisecondsSinceEpoch.toString();
       User? user = FirebaseAuth.instance.currentUser;
-      _Request.doc('$currentTime').set({
+      _Request.doc(currentTime).set({
         'P_id': user?.uid,
-        'P_Name': "$name",
+        'P_Name': name,
         'D_id': DoctorDocs["D_id"].toString(),
         'D_Name': DoctorDocs["D_Name"].toString(),
         'R_Status': 'Requested',
         'R_Time': DateTime.now().toString(),
-        'R_UID': '$currentTime',
+        'R_UID': currentTime,
         'R_EndTime': 'NULL',
       }).then((value) {
         Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => Requesteddoc()),
+          MaterialPageRoute(builder: (context) => const Requesteddoc()),
         );
       });
     } else {
@@ -143,14 +144,15 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text('Result'),
+                title: const Text(
+                    'Vitals are normal, So You cannot send urgent Request'),
                 content: Text(message),
                 actions: <Widget>[
                   ElevatedButton(
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
-                    child: Text('OK'),
+                    child: const Text('OK'),
                   ),
                 ],
               );
@@ -164,20 +166,21 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
       print('Interpreter is not initialized');
     }
   }
-
+//api 
   Future<String> sendNotifcation(
       {required String title,
       required String BODY,
       required String Token,
       String? con}) async {
-    String message = con != null ? con : "no";
+    String message = con ?? "no";
     Map<String, dynamic> body = {
-      "to": "$Token",
-      "notification": {"body": "$BODY", "title": "$title"},
+      "to": Token,
+      "notification": {"body": BODY, "title": title},
       "data": {
-        "patientID": "$uId",
-        "patientName": "$name",
-        "Condition": "$message",
+        "patientID": uId,
+        "patientName": name,
+        "Condition": message,
+        "From": "Patient"
       },
     };
     final msg = jsonEncode(body);
@@ -205,17 +208,18 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
   final TextEditingController _D_GenderController = TextEditingController();
   void getToken() async {
     String ptoken = '';
-    User? user = await FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     var vari = await FirebaseFirestore.instance
         .collection("Patients")
         .doc(user?.uid)
         .get();
-    if (mounted)
+    if (mounted) {
       setState(() {
         if (vari.data() != null) {
           ptoken = vari.data()!['P_Token'].toString();
         }
       });
+    }
   }
 
   final CollectionReference _Doctors =
@@ -251,13 +255,13 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                       ),
                     );
                   },
-                  child: Container(
-                    height: size.height / 5,
+                  child: SizedBox(
+                    // height: size.height / 5,
                     width: context.screenWidth,
                     child: Card(
                       color: context.cardColor,
                       //margin: const EdgeInsets.all(10),
-                      margin: EdgeInsets.symmetric(horizontal: 13, vertical: 5),
+                      margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
@@ -268,9 +272,9 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                             Container(
                               height: 80,
                               width: 80,
-                              padding: EdgeInsets.only(left: 10, top: 10),
+                              padding: const EdgeInsets.only(left: 10, top: 10),
                               // alignment: Alignment.centerLeft,
-                              decoration: BoxDecoration(
+                              decoration: const BoxDecoration(
                                 image: DecorationImage(
                                     image: AssetImage(
                                       "assets/Images/defaultdoctor.jpg",
@@ -282,7 +286,7 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                "${DoctorDocs[index]["D_Name"].toString()}"
+                                DoctorDocs[index]["D_Name"].toString()
                                     .text
                                     .bold
                                     .xl2
@@ -290,24 +294,24 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                                     .make()
                                     .px8()
                                     .pOnly(top: 4),
-                                "${DoctorDocs[index]["D_Email"].toString()}"
+                                DoctorDocs[index]["D_Email"].toString()
                                     .text
                                     .bold
                                     .xl
                                     .textStyle(context.captionStyle)
                                     .make()
                                     .px8(),
-                                "${DoctorDocs[index]["status"].toString()}"
+                                DoctorDocs[index]["status"].toString()
                                     .text
                                     .bold
                                     .size(16)
-                                    .color(Color.fromARGB(255, 73, 7, 180))
+                                    .color(const Color.fromARGB(255, 73, 7, 180))
                                     .make()
                                     .px8(),
                                 Row(
                                   children: [
                                     ElevatedButton(
-                                        child: Text('Send Request'),
+                                        child: const Text('Send Request'),
                                         onPressed: () async {
                                           uploadRequest(
                                               DoctorDocs: DoctorDocs[index]);

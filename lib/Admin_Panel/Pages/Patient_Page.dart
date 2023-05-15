@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PatientPage extends StatefulWidget {
-  PatientPage({Key? key}) : super(key: key);
+  const PatientPage({Key? key}) : super(key: key);
 
   @override
   State<PatientPage> createState() => _PatientPageState();
@@ -52,7 +51,7 @@ class _PatientPageState extends State<PatientPage> {
   final CollectionReference _Patients =
       FirebaseFirestore.instance.collection('Patients');
   FirebaseAuth auth = FirebaseAuth.instance;
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _create() async {
     String? radiovalue = '';
     await showModalBottomSheet(
         isScrollControlled: true,
@@ -85,9 +84,9 @@ class _PatientPageState extends State<PatientPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 4),
+                      padding: EdgeInsets.only(left: 4),
                       child: Text(
                         "Gender",
                         style: TextStyle(
@@ -99,7 +98,7 @@ class _PatientPageState extends State<PatientPage> {
                   ],
                 ),
                 RadioListTile(
-                  title: Text("Male"),
+                  title: const Text("Male"),
                   value: "Male",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -111,7 +110,7 @@ class _PatientPageState extends State<PatientPage> {
                   },
                 ),
                 RadioListTile(
-                  title: Text("Female"),
+                  title: const Text("Female"),
                   value: "Female",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -326,9 +325,9 @@ class _PatientPageState extends State<PatientPage> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: EdgeInsets.only(left: 15),
                       child: Text(
                         "Gender",
                         style: TextStyle(
@@ -340,7 +339,7 @@ class _PatientPageState extends State<PatientPage> {
                   ],
                 ),
                 RadioListTile(
-                  title: Text("Male"),
+                  title: const Text("Male"),
                   value: "Male",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -352,7 +351,7 @@ class _PatientPageState extends State<PatientPage> {
                   },
                 ),
                 RadioListTile(
-                  title: Text("Female"),
+                  title: const Text("Female"),
                   value: "Female",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -526,7 +525,7 @@ class _PatientPageState extends State<PatientPage> {
                   final DocumentSnapshot documentSnapshot = PatientDocs[index];
                   return Card(
                     //margin: const EdgeInsets.all(10),
-                    margin: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22)),
                     //elevation: 5,

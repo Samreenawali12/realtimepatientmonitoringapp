@@ -13,11 +13,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   final _emailController = TextEditingController();
   final formKey = GlobalKey<FormState>();
 
+  @override
   void dispose() {
     _emailController.dispose();
     super.dispose();
   }
 
+  @override
   void initState() {
     super.initState();
     _emailController.addListener(onListen);
@@ -32,7 +34,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       showDialog(
           context: context,
           builder: (context) {
-            return AlertDialog(
+            return const AlertDialog(
               content: Text("Password Email link sent! Check your email"),
             );
           });
@@ -60,7 +62,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Forgot Password",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -69,8 +71,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
+          const Padding(
+            padding: EdgeInsets.all(8.0),
             child: Text(
               "Enter your Email Below and we will send you password reset link",
               style: TextStyle(
@@ -80,7 +82,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               textAlign: TextAlign.center,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Padding(
@@ -91,25 +93,25 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 keyboardType: TextInputType.emailAddress,
                 controller: _emailController,
                 decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: const Icon(Icons.email),
                     suffixIcon: _emailController.text.isEmpty
                         ? Container(
                             width: 0,
                           )
                         : IconButton(
                             onPressed: () => _emailController.clear(),
-                            icon: Icon(Icons.close)),
+                            icon: const Icon(Icons.close)),
                     enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
+                      borderSide: const BorderSide(color: Colors.white),
                       borderRadius: BorderRadius.circular(12),
                     ),
                     focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.indigo),
+                        borderSide: const BorderSide(color: Colors.indigo),
                         borderRadius: BorderRadius.circular(12)),
                     hintText: 'Email',
                     fillColor: Colors.grey[200],
                     filled: true),
-                autofillHints: [AutofillHints.email],
+                autofillHints: const [AutofillHints.email],
                 validator: (email) =>
                     email != null && !EmailValidator.validate(email)
                         ? 'Enter a valid email'
@@ -117,7 +119,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           MaterialButton(
@@ -128,8 +130,8 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 final email = _emailController.text;
               }
             },
-            child: Text('Reset Password'),
             color: Colors.indigo[200],
+            child: const Text('Reset Password'),
           ),
         ],
       ),

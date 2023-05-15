@@ -1,25 +1,164 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Chat_Pages/ChatRoom.dart';
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/dochome.dart';
+import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:dbtest/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+// import 'package:flutter/services.dart';
 
 class D_Session extends StatefulWidget {
-  const D_Session({Key? key}) : super(key: key);
+  final DocumentSnapshot<Map<String, dynamic>>? patientInfo;
+  const D_Session({Key? key, this.patientInfo}) : super(key: key);
 
   @override
   State<D_Session> createState() => _D_Session();
 }
 
 class _D_Session extends State<D_Session> {
+  bool _prescriptionAdded = false;
   String docid = "";
   String docname = "";
   String patId = "";
   String rstatus = "";
   String ruid = "";
+  final _formKey2 = GlobalKey<FormState>();
+  final TextEditingController _patientNameController = TextEditingController();
+  final TextEditingController _medicationController = TextEditingController();
+  final TextEditingController _dosageController = TextEditingController();
+  final TextEditingController _frequencyController = TextEditingController();
+  final TextEditingController _durationController = TextEditingController();
   User? DoctorID = FirebaseAuth.instance.currentUser!;
+
+  void _submitForm() async {
+    if (_formKey2.currentState!.validate()) {
+      // Process the form data here
+      String patientName = _patientNameController.text;
+      String medication = _medicationController.text;
+      String dosage = _dosageController.text;
+      String frequency = _frequencyController.text;
+      String duration = _durationController.text;
+
+      String doctorID = FirebaseAuth.instance.currentUser!.uid;
+      String PatientID = "";
+      String PatientName = "";
+      var requestDetails = await FirebaseFirestore.instance
+          .collection('Requests')
+          .where('D_id', isEqualTo: doctorID)
+          .where('R_Status', isEqualTo: "Accepted")
+          .get();
+
+      PatientID = requestDetails.docs[0]['P_id'].toString();
+      PatientName = requestDetails.docs[0]['P_Name'].toString();
+      var requestId = requestDetails.docs[0]['R_UID'].toString();
+      FirebaseFirestore.instance.collection('Prescriptions').doc().set({
+        'D_id': doctorID,
+        'P_id': PatientID,
+        'P_Name': patientName,
+        'Medication': medication,
+        'Dosage': dosage,
+        'Frequency': frequency,
+        'Duration': duration,
+        'PrescribedAt': DateTime.now().toString(),
+        'RequestID': requestId,
+      });
+
+      _prescriptionAdded = true;
+
+      // You can then use this data to do whatever you want, such as
+      // send it to an API or store it in a database.
+      print('Patient Name: $patientName');
+      print('Medication: $medication');
+      print('Dosage: $dosage');
+      print('Frequency: $frequency');
+      print('Duration: $duration');
+      print('Doctor ID: $doctorID');
+      print('Patient ID: $PatientID');
+      print('Prescription Added: $_prescriptionAdded');
+
+      // Close the pop-up form
+      Navigator.of(context).pop();
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text("Prescrption has been added !"),
+        duration: Duration(seconds: 6),
+        backgroundColor: Colors.blue,
+      ));
+    }
+  }
+
+  showPrescriptionDialog() {
+    return AlertDialog(
+        title: const Text('Prescription Form'),
+        content: SingleChildScrollView(
+          child: Form(
+            key: _formKey2,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextFormField(
+                  controller: _patientNameController,
+                  decoration: const InputDecoration(labelText: 'Patient Name'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the patient name';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _medicationController,
+                  decoration: const InputDecoration(labelText: 'Medication'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the medication';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _dosageController,
+                  decoration: const InputDecoration(labelText: 'Dosage'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the dosage';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _frequencyController,
+                  decoration: const InputDecoration(labelText: 'Frequency'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the frequency';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  controller: _durationController,
+                  decoration: const InputDecoration(
+                    labelText: 'Duration',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter the duration';
+                    }
+                    return null;
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    _submitForm();
+                  },
+                  child: const Text('Submit'),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+
   void getOnGoingData() async {
     var vari = await FirebaseFirestore.instance
         .collection('Requests')
@@ -62,7 +201,7 @@ class _D_Session extends State<D_Session> {
   @override
   void initState() {
     getOnGoingData();
-    // getcloseData();
+    getUpdatedVitals();
     super.initState();
   }
 
@@ -136,7 +275,8 @@ class _D_Session extends State<D_Session> {
                                                       color: Colors.white),
                                                 ),
                                                 Text(
-                                                  "  Samreena Wali  ",
+                                                  widget.patientInfo!
+                                                      .data()!['P_Name'],
                                                   style: TextStyle(
                                                       fontSize: 16,
                                                       fontWeight:
@@ -308,13 +448,13 @@ class _D_Session extends State<D_Session> {
                                                     width: 10,
                                                   ),
                                                   Text(
-                                                    "Temperature:",
+                                                    "$temprature",
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
-                                                  Text("value",
+                                                  Text(temprature,
                                                       style: TextStyle(
                                                           fontSize: 14,
                                                           fontWeight: FontWeight
@@ -382,7 +522,7 @@ class _D_Session extends State<D_Session> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Text("value",
+                                                Text(BPM,
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:
@@ -449,7 +589,7 @@ class _D_Session extends State<D_Session> {
                                                       fontWeight:
                                                           FontWeight.bold),
                                                 ),
-                                                Text("value",
+                                                Text(oxygen,
                                                     style: TextStyle(
                                                         fontSize: 14,
                                                         fontWeight:
@@ -539,37 +679,6 @@ class _D_Session extends State<D_Session> {
                                   height: 30,
                                   color: Color.fromARGB(255, 120, 119, 119),
                                 ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Write Prescription",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
-                                    ),
-                                  ),
-                                ),
-                                TextFormField(
-                                  decoration: InputDecoration(
-                                      prefixIcon: Padding(
-                                        padding: EdgeInsets.all(0.0),
-                                        child: Icon(Icons.person,
-                                            size: 20.0, color: Colors.black),
-                                      ),
-                                      hintText: "Prescription Here...",
-                                      hintStyle: TextStyle(color: Colors.black),
-                                      border: OutlineInputBorder(
-                                          borderSide: BorderSide(width: 3),
-                                          borderRadius: BorderRadius.all(
-                                              new Radius.circular(10.0))),
-                                      labelStyle:
-                                          TextStyle(color: Colors.black)),
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 18.0,
-                                  ),
-                                ),
                                 Card(
                                   color: Colors.indigo,
                                   clipBehavior: Clip.antiAlias,
@@ -588,10 +697,38 @@ class _D_Session extends State<D_Session> {
                                       ),
                                       GestureDetector(
                                         onTap: () {
-                                          //Navigator.pushNamed(context, MyRoutes.DocDashR);
+                                          if (_prescriptionAdded == false) {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return showPrescriptionDialog();
+                                              },
+                                            );
+                                          } else {
+                                            showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return AlertDialog(
+                                                  title: const Text(
+                                                      'Prescription Already Added'),
+                                                  content: const Text(
+                                                      'You have already added prescription for this patient, Start a new session to add new prescription.'),
+                                                  actions: <Widget>[
+                                                    TextButton(
+                                                      child: const Text('OK'),
+                                                      onPressed: () {
+                                                        Navigator.of(context)
+                                                            .pop();
+                                                      },
+                                                    ),
+                                                  ],
+                                                );
+                                              },
+                                            );
+                                          }
                                         },
                                         child: const Text(
-                                          "  Confirm Prescription  ",
+                                          "  Write Prescription  ",
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold,

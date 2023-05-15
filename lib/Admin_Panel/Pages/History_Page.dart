@@ -5,7 +5,7 @@ import 'History/Admin_Requests.dart';
 import 'History/AdminAcceptedRequests.dart';
 
 class A_History extends StatefulWidget {
-  A_History({Key? key}) : super(key: key);
+  const A_History({Key? key}) : super(key: key);
 
   @override
   State<A_History> createState() => _A_HistoryState();
@@ -20,11 +20,11 @@ class _A_HistoryState extends State<A_History> {
           appBar: AppBar(
             //automaticallyImplyLeading: false,
             backgroundColor: Colors.transparent,
-            title: Text(
+            title: const Text(
               "Requests History",
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
-            bottom: TabBar(
+            bottom: const TabBar(
               tabs: [
                 Tab(
                   text: "Requests",
@@ -41,7 +41,7 @@ class _A_HistoryState extends State<A_History> {
               ],
             ),
           ),
-          body: TabBarView(children: [
+          body: const TabBarView(children: [
             AdminRequests(),
             AdminAcceptedRequests(),
             AdminCancelledRequests(),

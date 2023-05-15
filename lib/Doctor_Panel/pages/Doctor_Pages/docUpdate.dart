@@ -4,10 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-import '../routes.dart';
 
 class UpdateDoc extends StatefulWidget {
-  UpdateDoc({Key? key}) : super(key: key);
+  const UpdateDoc({Key? key}) : super(key: key);
 
   @override
   State<UpdateDoc> createState() => _UpdateDocState();
@@ -32,13 +31,13 @@ class _UpdateDocState extends State<UpdateDoc> {
   String experience = '';
   String certification = '';
   void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
-    var vari = await FirebaseFirestore.instance
+    User? user = FirebaseAuth.instance.currentUser;
+    var vari = FirebaseFirestore.instance
         .collection("Doctors")
         .doc(user?.uid)
         .snapshots()
         .listen((vari) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           if (vari.data() != null) {
             pUID = vari.data()!['D_Id'].toString();
@@ -59,9 +58,11 @@ class _UpdateDocState extends State<UpdateDoc> {
             certification = vari.data()!['D_Certification'].toString();
           }
         });
+      }
     });
   }
 
+  @override
   void initState() {
     getData();
     super.initState();
@@ -130,9 +131,9 @@ class _UpdateDocState extends State<UpdateDoc> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
+                    children: const [
                       Padding(
-                        padding: const EdgeInsets.only(left: 15),
+                        padding: EdgeInsets.only(left: 15),
                         child: Text(
                           "Gender",
                           style: TextStyle(
@@ -144,7 +145,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                     ],
                   ),
                   RadioListTile(
-                    title: Text("Male"),
+                    title: const Text("Male"),
                     value: "Male",
                     groupValue: radiovalue,
                     onChanged: (value) {
@@ -156,7 +157,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                     },
                   ),
                   RadioListTile(
-                    title: Text("Female"),
+                    title: const Text("Female"),
                     value: "Female",
                     groupValue: radiovalue,
                     onChanged: (value) {
@@ -305,7 +306,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                       final String Experience = D_ExperienceController.text;
                       final String Certification =
                           D_CertificationController.text;
-                      User? user = await FirebaseAuth.instance.currentUser;
+                      User? user = FirebaseAuth.instance.currentUser;
                       if (user != null) {
                         await FirebaseFirestore.instance
                             .collection("Doctors")
@@ -340,7 +341,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                         getData();
                         Navigator.of(context).pushReplacement(
                           MaterialPageRoute(
-                            builder: (context) => DocHome(),
+                            builder: (context) => const DocHome(),
                           ),
                         );
                         //Navigator.pushNamed(context, MyRoutes.DocUpdateR);
@@ -366,23 +367,23 @@ class _UpdateDocState extends State<UpdateDoc> {
               .color(context.accentColor)
               .make(),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             color: context.accentColor,
             onPressed: () => Navigator.of(context).pop(),
           ),
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () => _update(),
-                  child: Icon(
+                  child: const Icon(
                     Icons.edit,
                     size: 26.0,
                   ),
                 )),
           ]),
       body: isloading
-          ? CircularProgressIndicator(
+          ? const CircularProgressIndicator(
               color: Colors.blue,
             )
           : SafeArea(
@@ -391,7 +392,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                 Container(
                   height: 200,
                   width: 200,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     image: DecorationImage(
                         image: AssetImage(
                           "assets/Images/docgg.png",
@@ -407,7 +408,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                   edge: VxEdge.TOP,
                   child: SingleChildScrollView(
                     child: Container(
-                      padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                      padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                       width: context.screenWidth,
                       color: context.cardColor,
                       child: Column(
@@ -423,7 +424,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -432,11 +433,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$name"
+                                    name
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -455,7 +456,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -464,11 +465,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$email"
+                                    email
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -487,7 +488,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -496,11 +497,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$gender"
+                                    gender
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -551,7 +552,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -560,11 +561,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$cnic"
+                                    cnic
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -583,7 +584,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -592,11 +593,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$phonenumber"
+                                    phonenumber
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -615,7 +616,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -624,11 +625,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$address"
+                                    address
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -647,7 +648,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -656,11 +657,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$day"
+                                    day
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -679,7 +680,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -688,11 +689,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$timing"
+                                    timing
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -711,7 +712,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -720,11 +721,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$education"
+                                    education
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -743,7 +744,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -752,11 +753,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$institution"
+                                    institution
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -775,7 +776,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -784,11 +785,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$specialization"
+                                    specialization
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -807,7 +808,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -816,11 +817,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$experience"
+                                    experience
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -839,7 +840,7 @@ class _UpdateDocState extends State<UpdateDoc> {
                           Card(
                             elevation: 5,
                             color: context.canvasColor,
-                            shape: StadiumBorder(
+                            shape: const StadiumBorder(
                               side: BorderSide(
                                 color: Colors.transparent,
                                 width: 2.0,
@@ -848,11 +849,11 @@ class _UpdateDocState extends State<UpdateDoc> {
                             child: Container(
                               height: 50,
                               width: 400,
-                              padding: EdgeInsets.all(10),
+                              padding: const EdgeInsets.all(10),
                               child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "$certification"
+                                    certification
                                         .text
                                         .xl
                                         .color(context.accentColor)

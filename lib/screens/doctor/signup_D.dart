@@ -1,10 +1,8 @@
 import 'package:dbtest/Admin_Panel/Pages/Doctor_Page.dart';
-import 'package:dbtest/reuseable_widgets/reuseable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../signInScreen.dart';
 
 class signUpDoc extends StatefulWidget {
   const signUpDoc({Key? key}) : super(key: key);
@@ -51,7 +49,7 @@ class _signUpDocState extends State<signUpDoc> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: SingleChildScrollView(
@@ -80,7 +78,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.person_outlined,
                       color: Colors.indigo,
                     ),
@@ -91,7 +89,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -102,9 +100,9 @@ class _signUpDocState extends State<signUpDoc> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: EdgeInsets.only(left: 15),
                       child: Text(
                         "Gender",
                         style: TextStyle(
@@ -116,7 +114,7 @@ class _signUpDocState extends State<signUpDoc> {
                   ],
                 ),
                 RadioListTile(
-                  title: Text("Male"),
+                  title: const Text("Male"),
                   value: "Male",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -128,7 +126,7 @@ class _signUpDocState extends State<signUpDoc> {
                   },
                 ),
                 RadioListTile(
-                  title: Text("Female"),
+                  title: const Text("Female"),
                   value: "Female",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -159,7 +157,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.mail_outline,
                       color: Colors.indigo,
                     ),
@@ -170,7 +168,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -202,7 +200,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.mail_outline,
                       color: Colors.indigo,
                     ),
@@ -213,7 +211,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -237,7 +235,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.home,
                       color: Colors.indigo,
                     ),
@@ -248,7 +246,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -277,7 +275,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.phone_android,
                       color: Colors.indigo,
                     ),
@@ -288,7 +286,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -317,7 +315,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.card_membership_outlined,
                       color: Colors.indigo,
                     ),
@@ -328,7 +326,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -354,7 +352,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.book_online,
                       color: Colors.indigo,
                     ),
@@ -365,7 +363,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -391,7 +389,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.school_outlined,
                       color: Colors.indigo,
                     ),
@@ -402,7 +400,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -428,7 +426,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.military_tech,
                       color: Colors.indigo,
                     ),
@@ -439,7 +437,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -465,7 +463,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.import_contacts_outlined,
                       color: Colors.indigo,
                     ),
@@ -476,7 +474,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -502,7 +500,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.timer,
                       color: Colors.indigo,
                     ),
@@ -513,7 +511,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -539,7 +537,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.calendar_month,
                       color: Colors.indigo,
                     ),
@@ -550,7 +548,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -576,7 +574,7 @@ class _signUpDocState extends State<signUpDoc> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.pageview_sharp,
                       color: Colors.indigo,
                     ),
@@ -587,7 +585,7 @@ class _signUpDocState extends State<signUpDoc> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -652,7 +650,7 @@ class _signUpDocState extends State<signUpDoc> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (context) => DoctorPage()))
+                                        builder: (context) => const DoctorPage()))
                               })
                           .onError(
                             (error, stackTrace) => {
@@ -682,13 +680,13 @@ class _signUpDocState extends State<signUpDoc> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => DoctorPage(),
+                                  builder: (context) => const DoctorPage(),
                                 ),
                               )
                             },
                           );
                     },
-                    child: Text("Register"))
+                    child: const Text("Register"))
                 // signInsignUpButton(
                 //   context,
                 //   false,

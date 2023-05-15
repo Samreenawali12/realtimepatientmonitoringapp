@@ -8,8 +8,8 @@ class DHandleToken {
       FirebaseFirestore.instance.collection("Doctors");
   insertToken() async {
     //get token
-    var _fcm = FirebaseMessaging.instance;
-    final fcmToken = await _fcm.getToken();
+    var fcm = FirebaseMessaging.instance;
+    final fcmToken = await fcm.getToken();
     print("FCM token is :$fcmToken");
     //set Token
     DoctorsDoc.doc(user?.uid).update({"D_Token": fcmToken});

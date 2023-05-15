@@ -126,7 +126,7 @@ class _MyDrawerState extends State<MyDrawer> {
             ListTile(
               onTap: () {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => DocHome()));
+                    MaterialPageRoute(builder: (context) => const DocHome()));
               },
               leading: Icon(
                 CupertinoIcons.graph_circle_fill,

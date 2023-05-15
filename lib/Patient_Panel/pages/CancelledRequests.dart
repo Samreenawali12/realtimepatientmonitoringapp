@@ -1,14 +1,10 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/D_Session.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:http/http.dart';
-import '../../../Patient_Panel/pages/P_session.dart';
 
 class CancelledRequests extends StatefulWidget {
-  CancelledRequests({Key? key}) : super(key: key);
+  const CancelledRequests({Key? key}) : super(key: key);
 
   @override
   State<CancelledRequests> createState() => _CancelledRequestsState();
@@ -44,7 +40,7 @@ class _CancelledRequestsState extends State<CancelledRequests> {
 
   void getCancelledData() async {
     User? PatientID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('P_id', isEqualTo: PatientID.uid)
@@ -93,9 +89,9 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!.docs.length > 0) {
+                      if (snapshot.data!.docs.isNotEmpty) {
                         final RequestDocs = snapshot.data!.docs;
-                        return Container(
+                        return SizedBox(
                           width: size.width / 1,
                           height: size.height * 0.7,
                           child: ListView.builder(
@@ -103,13 +99,13 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                               itemBuilder: (context, index) {
                                 final DocumentSnapshot documentSnapshot =
                                     RequestDocs[index];
-                                return Container(
+                                return SizedBox(
                                   height: size.height / 5.5,
                                   width: context.screenWidth,
                                   child: Card(
                                     color: context.cardColor,
                                     //margin: const EdgeInsets.all(10),
-                                    margin: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22),
@@ -140,7 +136,7 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["D_Name"].toString()}"
+                                                      RequestDocs[index]["D_Name"].toString()
                                                           .text
                                                           .xl
                                                           .semiBold
@@ -169,7 +165,7 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Status"].toString()}"
+                                                      RequestDocs[index]["R_Status"].toString()
                                                           .text
                                                           .xl
                                                           .semiBold
@@ -198,7 +194,7 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Time"].toString()}"
+                                                      RequestDocs[index]["R_Time"].toString()
                                                           .text
                                                           .medium
                                                           //
@@ -227,7 +223,7 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_EndTime"].toString()}"
+                                                      RequestDocs[index]["R_EndTime"].toString()
                                                           .text
                                                           .medium
                                                           //
@@ -259,7 +255,7 @@ class _CancelledRequestsState extends State<CancelledRequests> {
                                 left: size.width / 5,
                                 top: size.width / 2,
                               )),
-                              Text(
+                              const Text(
                                 "No Cancelled History",
                                 style: TextStyle(
                                     fontSize: 20,

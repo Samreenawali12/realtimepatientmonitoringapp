@@ -1,11 +1,13 @@
+import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'dart:async';
-import 'dart:math' as math;
+
+import 'package:velocity_x/velocity_x.dart';
 
 class Spo2Graph extends StatefulWidget {
-  Spo2Graph({Key? key, required this.title}) : super(key: key);
+  const Spo2Graph({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -17,10 +19,10 @@ class _Spo2GraphState extends State<Spo2Graph> {
   int i = 0;
   late List<LiveData> chartData = [];
   late ChartSeriesController _chartSeriesController;
-  int timer=10;
+  int timer = 10;
   //retrieve data
   _retrieveData() async {
-    Timer.periodic(Duration(seconds: 1), (timer) async {
+    Timer.periodic(const Duration(seconds: 1), (timer) async {
       DatabaseReference ref =
           FirebaseDatabase.instance.ref("i8fCoT6I13P9JH0PbiYFQIFVZCF3/Spo2");
       DatabaseEvent event = await ref.once();
@@ -28,61 +30,101 @@ class _Spo2GraphState extends State<Spo2Graph> {
       print(event.snapshot.value);
       final sensorvalue = event.snapshot.value;
       num mynum = num.parse(event.snapshot.value.toString());
-      if(mounted){
-         setState(() {
-        if(i>=20)
-        {
-          chartData.add(LiveData(i++, mynum));
-          chartData.removeAt(0);
-
-        }
-        else
-        {
-          chartData.add(LiveData(i++, mynum));
-        }
-      });
-
+      if (mounted) {
+        setState(() {
+          if (i >= 20) {
+            chartData.add(LiveData(i++, mynum));
+            chartData.removeAt(0);
+          } else {
+            chartData.add(LiveData(i++, mynum));
+          }
+        });
       }
-     
     });
   }
 
   @override
   void initState() {
     // chartData = _retrieveData();
-   // Timer.periodic(const Duration(seconds: 1), updateDataSource);
+    // Timer.periodic(const Duration(seconds: 1), updateDataSource);
     super.initState();
+    getUpdatedVitals();
     _retrieveData();
   }
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-            appBar: AppBar(
-              title: Text("graph"),
+             appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: const IconThemeData(color: Colors.black),
+            title: Text(
+              "Real Time Oxygen Level",
+              style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: context.accentColor),
             ),
-            body: SfCartesianChart(
-                series: <LineSeries<LiveData, int>>[
-                  LineSeries<LiveData, int>(
-                    onRendererCreated: (ChartSeriesController controller) {
-                      _chartSeriesController = controller;
-                    },
-                    dataSource: chartData,
-                   color: Color.fromARGB(255, 89, 13, 254),
-                    xValueMapper: (LiveData sales, _) => sales.time,
-                    yValueMapper: (LiveData sales, _) => sales.sensorvalue,
-                  )
-                ],
-                primaryXAxis: NumericAxis(
-                    majorGridLines: const MajorGridLines(width: 0),
-                    edgeLabelPlacement: EdgeLabelPlacement.shift,
-                    interval: 1,
-                    title: AxisTitle(text: 'Time (seconds)')),
-                primaryYAxis: NumericAxis(
-                    axisLine: const AxisLine(width: 0),
-                    majorTickLines: const MajorTickLines(size: 0),
-                    title: AxisTitle(text: 'Oxygen Level')))));
+          ),
+            body: Column(
+              children: [
+                Container(
+                  width: size.width / 2,
+                  height: size.height / 2.9,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(
+                          "assets/Images/spo21.png",
+                        ),
+                        fit: BoxFit.fitWidth,
+                        alignment: Alignment.center),
+                  ),
+                ),
+                Text(
+                  "$oxygen%",
+                  style: TextStyle(
+                    fontSize: size.height / 40,
+                    color: const Color.fromARGB(255, 65, 23, 165),
+                    fontWeight: FontWeight.w700,
+                    fontStyle: FontStyle.normal,
+                    letterSpacing: 4,
+                    wordSpacing: 5,
+                  ),
+                ),
+                SizedBox(
+                  width: size.width,
+                  height: size.height / 2,
+                  child: SizedBox(
+                      width: size.width,
+                      height: size.height / 2,
+                      child: SfCartesianChart(
+                          series: <LineSeries<LiveData, int>>[
+                            LineSeries<LiveData, int>(
+                              onRendererCreated:
+                                  (ChartSeriesController controller) {
+                                _chartSeriesController = controller;
+                              },
+                              dataSource: chartData,
+                              color: const Color.fromARGB(255, 89, 13, 254),
+                              xValueMapper: (LiveData sales, _) => sales.time,
+                              yValueMapper: (LiveData sales, _) =>
+                                  sales.sensorvalue,
+                            )
+                          ],
+                          primaryXAxis: NumericAxis(
+                              majorGridLines: const MajorGridLines(width: 0),
+                              edgeLabelPlacement: EdgeLabelPlacement.shift,
+                              interval: 1,
+                              title: AxisTitle(text: 'Time (seconds)')),
+                          primaryYAxis: NumericAxis(
+                              axisLine: const AxisLine(width: 0),
+                              majorTickLines: const MajorTickLines(size: 0),
+                              title: AxisTitle(text: 'Oxygen Level')))),
+                ),
+              ],
+            )));
   }
 
   List<LiveData> getChartData(int i, num num1) {

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/D_History.dart';
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/docRequest.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -10,6 +9,8 @@ import '../../drawer.dart';
 import '../routes.dart';
 
 class DocHome extends StatefulWidget {
+  const DocHome({super.key});
+
   @override
   State<DocHome> createState() => _DocHomeState();
 }
@@ -106,7 +107,7 @@ class _DocHomeState extends State<DocHome> with WidgetsBindingObserver {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           "Home",
           style: TextStyle(
@@ -114,236 +115,237 @@ class _DocHomeState extends State<DocHome> with WidgetsBindingObserver {
               fontWeight: FontWeight.bold,
               color: MyTheme.darkbluishColor),
         ),
+        centerTitle: true,
       ),
-      body: Column(
-        children: [
-          // Container(
-          //   child: errmsg("No Internet Connection Available", isoffline),
-          //   //to show internet connection message on isoffline = true.
-          // ),
-          SizedBox(
-            height: 30,
-            width: 20,
-          ),
-          Container(
-            color: Colors.white,
-            //color: Colors.white.withOpacity(0.2),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                "Welcome Dr $name!",
-                style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: MyTheme.darkbluishColor),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            // Container(
+            //   child: errmsg("No Internet Connection Available", isoffline),
+            //   //to show internet connection message on isoffline = true.
+            // ),
+            const SizedBox(
+              height: 30,
+              width: 20,
+            ),
+            Container(
+              color: Colors.white,
+              //color: Colors.white.withOpacity(0.2),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  "Welcome Dr $name!",
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: MyTheme.darkbluishColor),
+                ),
               ),
             ),
-          ),
-          SizedBox(
-            height: 15,
-            width: 20,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              // color: Colors.white.withOpacity(0.2),
-              width: size.width / 1,
-              height: size.height / 1.8,
+            const SizedBox(
+              height: 15,
+              width: 20,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                // color: Colors.white.withOpacity(0.2),
+                width: size.width / 1,
+                height: size.height / 1.8,
 
-              child: GridView.count(
-                crossAxisCount: 2,
-                crossAxisSpacing: 6,
-                mainAxisSpacing: 6,
-                children: [
-                  Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: Colors.indigo.withOpacity(.5),
-                          // blurRadius: 10.0, // soften the shadow
-                          //spreadRadius: 0.0, //extend the shadow
-                          offset: Offset(
-                            2.0, // Move to right 10  horizontally
-                            2.0,
-                          ))
-                    ]),
-                    child: Card(
-                      color: Colors.indigo,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                          //borderRadius: BorderRadius.circular(10),
-                          side: BorderSide(
-                              color: MyTheme.darkbluishColor, width: 0)),
-                      child: Container(
-                          //height: 10,
-                          // color: Colors.blue,
-                          child: InkWell(
-                        onTap: () =>
-                            Navigator.pushNamed(context, MyRoutes.DocHomeR),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              "assets/Images/home.png",
-                              height: 130,
-                              width: 150,
-                              fit: BoxFit.cover,
-                            ),
-                            //Spacer(),
-                            Text(
-                              "Home",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: Colors.indigo.withOpacity(.5),
-                          // blurRadius: 10.0, // soften the shadow
-                          //spreadRadius: 0.0, //extend the shadow
-                          offset: Offset(
-                            2.0, // Move to right 10  horizontally
-                            2.0,
-                          ))
-                    ]),
-                    child: Card(
-                      color: Colors.indigo,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          side: BorderSide(
-                              color: MyTheme.darkbluishColor, width: 0)),
-                      child: Container(
-                          // color: Colors.blue,
-                          child: InkWell(
-                        onTap: () =>
-                            Navigator.pushNamed(context, MyRoutes.DocProfileR),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              "assets/Images/profiled.png",
-                              height: 130,
-                              width: 140,
-                              fit: BoxFit.cover,
-                            ),
-                            Text(
-                              "Profile",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: Colors.indigo.withOpacity(.5),
-                          // blurRadius: 10.0, // soften the shadow
-                          //spreadRadius: 0.0, //extend the shadow
-                          offset: Offset(
-                            2.0, // Move to right 10  horizontally
-                            2.0,
-                          ))
-                    ]),
-                    child: Card(
-                      color: Colors.indigo,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          side: BorderSide(
-                              color: MyTheme.darkbluishColor, width: 0)),
-                      child: Container(
-                          // color: Colors.blue,
-                          child: InkWell(
-                        onTap: () => Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => docRequest(),
+                child: GridView.count(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            color: Colors.indigo.withOpacity(.5),
+                            // blurRadius: 10.0, // soften the shadow
+                            //spreadRadius: 0.0, //extend the shadow
+                            offset: const Offset(
+                              2.0, // Move to right 10  horizontally
+                              2.0,
+                            ))
+                      ]),
+                      child: Card(
+                        color: Colors.indigo,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                            //borderRadius: BorderRadius.circular(10),
+                            side: BorderSide(
+                                color: MyTheme.darkbluishColor, width: 0)),
+                        child: InkWell(
+                          onTap: () =>
+                              Navigator.pushNamed(context, MyRoutes.DocHomeR),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Image.asset(
+                                "assets/Images/home.png",
+                                //   height: MediaQuery.of(context).size.height *
+                                //      0.20, // 130,
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                fit: BoxFit.fill,
+                              ),
+                              //Spacer(),
+                              const Text(
+                                "Home",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
                           ),
                         ),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              "assets/Images/dashb.png",
-                              height: 130,
-                              width: 150,
-                              fit: BoxFit.cover,
-                            ),
-                            Text(
-                              "Requests",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      )),
+                      ),
                     ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(boxShadow: [
-                      BoxShadow(
-                          color: Colors.indigo.withOpacity(.5),
-                          // blurRadius: 10.0, // soften the shadow
-                          //spreadRadius: 0.0, //extend the shadow
-                          offset: Offset(
-                            2.0, // Move to right 10  horizontally
-                            2.0,
-                          ))
-                    ]),
-                    child: Card(
-                      color: Colors.indigo,
-                      clipBehavior: Clip.antiAlias,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(0),
-                          side: BorderSide(
-                              color: MyTheme.darkbluishColor, width: 0)),
-                      child: Container(
-
-                          // color: Colors.blue,
-                          child: InkWell(
-                        onTap: () =>
-                            Navigator.pushNamed(context, MyRoutes.DocUpdateR),
-                        child: Column(
-                          children: [
-                            Image.asset(
-                              "assets/Images/updatd.png",
-                              height: 130,
-                              width: 100,
-                              fit: BoxFit.cover,
-                            ),
-                            Text(
-                              "Update Profile",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ],
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            color: Colors.indigo.withOpacity(.5),
+                            // blurRadius: 10.0, // soften the shadow
+                            //spreadRadius: 0.0, //extend the shadow
+                            offset: const Offset(
+                              2.0, // Move to right 10  horizontally
+                              2.0,
+                            ))
+                      ]),
+                      child: Card(
+                        color: Colors.indigo,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(
+                                color: MyTheme.darkbluishColor, width: 0)),
+                        child: InkWell(
+                          onTap: () => Navigator.pushNamed(
+                              context, MyRoutes.DocProfileR),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Image.asset(
+                                "assets/Images/profiled.png",
+                                //   height: MediaQuery.of(context).size.height *
+                                //      0.20, // 130,
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                fit: BoxFit.fill,
+                              ),
+                              const Text(
+                                "Profile",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
                         ),
-                      )),
+                      ),
                     ),
-                  ),
-                ],
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            color: Colors.indigo.withOpacity(.5),
+                            // blurRadius: 10.0, // soften the shadow
+                            //spreadRadius: 0.0, //extend the shadow
+                            offset: const Offset(
+                              2.0, // Move to right 10  horizontally
+                              2.0,
+                            ))
+                      ]),
+                      child: Card(
+                        color: Colors.indigo,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(
+                                color: MyTheme.darkbluishColor, width: 0)),
+                        child: InkWell(
+                          onTap: () => Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const docRequest(),
+                            ),
+                          ),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Image.asset(
+                                "assets/Images/dashb.png",
+                                //  height: MediaQuery.of(context).size.height *
+                                //    0.20, // 130,
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                fit: BoxFit.fill,
+                              ),
+                              const Text(
+                                "Requests",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(boxShadow: [
+                        BoxShadow(
+                            color: Colors.indigo.withOpacity(.5),
+                            // blurRadius: 10.0, // soften the shadow
+                            //spreadRadius: 0.0, //extend the shadow
+                            offset: const Offset(
+                              2.0, // Move to right 10  horizontally
+                              2.0,
+                            ))
+                      ]),
+                      child: Card(
+                        color: Colors.indigo,
+                        clipBehavior: Clip.antiAlias,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(0),
+                            side: BorderSide(
+                                color: MyTheme.darkbluishColor, width: 0)),
+                        child: InkWell(
+                          onTap: () =>
+                              Navigator.pushNamed(context, MyRoutes.DocUpdateR),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: [
+                              Image.asset(
+                                "assets/Images/updatd.png",
+                                height: MediaQuery.of(context).size.height *
+                                    0.17, // 130,
+                                width: MediaQuery.of(context).size.width * 0.35,
+                                fit: BoxFit.fill,
+                              ),
+                              const Text(
+                                "Update Profile",
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
-      drawer: MyDrawer(),
+      drawer: const MyDrawer(),
       bottomNavigationBar: BottomAppBar(
         child: Padding(
           padding: const EdgeInsets.all(9.0),
-          child: Container(
+          child: SizedBox(
             height: 80,
             child: Row(
               children: <Widget>[
@@ -364,7 +366,7 @@ class _DocHomeState extends State<DocHome> with WidgetsBindingObserver {
                     )
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Column(
                   children: [
                     IconButton(
@@ -372,7 +374,7 @@ class _DocHomeState extends State<DocHome> with WidgetsBindingObserver {
                             // Navigator.pushNamed(context, MyRoutes.DocUpdateR),
                             Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => docRequest(),
+                                builder: (context) => const docRequest(),
                               ),
                             ),
                         icon: Icon(
@@ -387,13 +389,13 @@ class _DocHomeState extends State<DocHome> with WidgetsBindingObserver {
                     )
                   ],
                 ),
-                Spacer(),
+                const Spacer(),
                 Column(
                   children: [
                     IconButton(
                         onPressed: () => Navigator.of(context).push(
                               MaterialPageRoute(
-                                builder: (context) => D_History(),
+                                builder: (context) => const D_History(),
                               ),
                             ),
                         icon: Icon(

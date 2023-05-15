@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:mychatapp/pages/Doctor_Pages/signin_D.dart';
 
 class ChangePassword extends StatefulWidget {
-  ChangePassword({Key? key}) : super(key: key);
+  const ChangePassword({Key? key}) : super(key: key);
 
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
@@ -33,10 +33,10 @@ class _ChangePasswordState extends State<ChangePassword> {
       FirebaseAuth.instance.signOut();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.orangeAccent,
           content: Text(
             'Your Password has been Changed. Login again !',
@@ -51,7 +51,7 @@ class _ChangePasswordState extends State<ChangePassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Reset Password",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -60,14 +60,14 @@ class _ChangePasswordState extends State<ChangePassword> {
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: ListView(children: [
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
               child: TextFormField(
                 autofocus: false,
                 obscureText: true,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'New Password: ',
                   hintText: 'Enter New Password',
                   labelStyle: TextStyle(fontSize: 20.0),
@@ -83,7 +83,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 },
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             MaterialButton(
@@ -104,11 +104,11 @@ class _ChangePasswordState extends State<ChangePassword> {
                   });
                 }
               },
-              child: Text(
+              color: Colors.indigo[200],
+              child: const Text(
                 'Change Password',
                 style: TextStyle(fontSize: 18.0),
               ),
-              color: Colors.indigo[200],
             ),
           ]),
         ),

@@ -1,12 +1,10 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:http/http.dart';
 
 class D_CompletedRequests extends StatefulWidget {
-  D_CompletedRequests({Key? key}) : super(key: key);
+  const D_CompletedRequests({Key? key}) : super(key: key);
 
   @override
   State<D_CompletedRequests> createState() => _D_CompletedRequestsState();
@@ -41,7 +39,7 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
   String rtime = "";
   void getCompletedData() async {
     User? PatientID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('R_id', isEqualTo: PatientID.uid)
@@ -89,9 +87,9 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!.docs.length > 0) {
+                      if (snapshot.data!.docs.isNotEmpty) {
                         final RequestDocs = snapshot.data!.docs;
-                        return Container(
+                        return SizedBox(
                           width: size.width / 1,
                           height: size.height * 0.8,
                           child: ListView.builder(
@@ -99,13 +97,13 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                               itemBuilder: (context, index) {
                                 final DocumentSnapshot documentSnapshot =
                                     RequestDocs[index];
-                                return Container(
+                                return SizedBox(
                                   height: size.height / 5.5,
                                   width: context.screenWidth,
                                   child: Card(
                                     color: context.cardColor,
                                     //margin: const EdgeInsets.all(10),
-                                    margin: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22),
@@ -136,7 +134,7 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["P_Name"].toString()}"
+                                                      RequestDocs[index]["P_Name"].toString()
                                                           .text
                                                           .xl
                                                           .semiBold
@@ -165,7 +163,7 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Status"].toString()}"
+                                                      RequestDocs[index]["R_Status"].toString()
                                                           .text
                                                           .xl
                                                           .semiBold
@@ -194,7 +192,7 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Time"].toString()}"
+                                                      RequestDocs[index]["R_Time"].toString()
                                                           .text
                                                           .medium
                                                           //
@@ -223,7 +221,7 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_EndTime"].toString()}"
+                                                      RequestDocs[index]["R_EndTime"].toString()
                                                           .text
                                                           .medium
                                                           //
@@ -255,7 +253,7 @@ class _D_CompletedRequestsState extends State<D_CompletedRequests> {
                                 left: size.width / 5,
                                 top: size.height / 1.5,
                               )),
-                              Text(
+                              const Text(
                                 "No Completed History",
                                 style: TextStyle(
                                     fontSize: 20,

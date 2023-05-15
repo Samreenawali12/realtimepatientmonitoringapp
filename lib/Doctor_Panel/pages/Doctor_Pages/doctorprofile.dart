@@ -1,17 +1,17 @@
 // ignore_for_file: unnecessary_string_interpolations, avoid_unnecessary_containers
 
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:velocity_x/velocity_x.dart';
 
 import '../../../theme.dart';
 import '../../drawer.dart';
 
 class docProfile extends StatefulWidget {
+  const docProfile({super.key});
+
   @override
   State<docProfile> createState() => _docProfileState();
 }
@@ -33,7 +33,7 @@ class _docProfileState extends State<docProfile> {
   String education = '';
   String experience = '';
   void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     // ignore: deprecated_member_use
     user!.updateProfile(displayName: name);
     var vari = await FirebaseFirestore.instance
@@ -61,6 +61,7 @@ class _docProfileState extends State<docProfile> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -202,7 +203,7 @@ class _docProfileState extends State<docProfile> {
                         borderRadius: BorderRadius.circular(10),
                         side: BorderSide(
                             color: MyTheme.darkbluishColor, width: 3)),
-                    child: Container(
+                    child: SizedBox(
                         width: size.width / 20,
                         //color: MyTheme.creamColor,
                         child: Column(

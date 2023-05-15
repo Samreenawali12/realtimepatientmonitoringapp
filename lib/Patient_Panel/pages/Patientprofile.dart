@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class PatientProfile extends StatefulWidget {
-  PatientProfile({Key? key}) : super(key: key);
+  const PatientProfile({Key? key}) : super(key: key);
 
   @override
   State<PatientProfile> createState() => _PatientProfileState();
@@ -21,13 +21,13 @@ class _PatientProfileState extends State<PatientProfile> {
   String phonenumber = '';
   String cnic = '';
   void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
-    var vari = await FirebaseFirestore.instance
+    User? user = FirebaseAuth.instance.currentUser;
+    var vari = FirebaseFirestore.instance
         .collection("Patients")
         .doc(user?.uid)
         .snapshots()
         .listen((vari) {
-      if (mounted)
+      if (mounted) {
         setState(() {
           if (vari.data() != null) {
             pUID = vari.data()!['P_id'].toString();
@@ -41,9 +41,11 @@ class _PatientProfileState extends State<PatientProfile> {
             cnic = vari.data()!['P_CNIC'].toString();
           }
         });
+      }
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -98,9 +100,9 @@ class _PatientProfileState extends State<PatientProfile> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 4),
+                      padding: EdgeInsets.only(left: 4),
                       child: Text(
                         "Gender",
                         style: TextStyle(
@@ -112,7 +114,7 @@ class _PatientProfileState extends State<PatientProfile> {
                   ],
                 ),
                 RadioListTile(
-                  title: Text("Male"),
+                  title: const Text("Male"),
                   value: "Male",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -124,7 +126,7 @@ class _PatientProfileState extends State<PatientProfile> {
                   },
                 ),
                 RadioListTile(
-                  title: Text("Female"),
+                  title: const Text("Female"),
                   value: "Female",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -195,7 +197,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     final String Phonenumber = _P_PhoneNumberController.text;
                     final String Cnic = _P_CnicController.text;
                     final String Address = _P_AddressController.text;
-                    User? user = await FirebaseAuth.instance.currentUser;
+                    User? user = FirebaseAuth.instance.currentUser;
                     if (user != null) {
                       await FirebaseFirestore.instance
                           .collection("Patients")
@@ -232,16 +234,16 @@ class _PatientProfileState extends State<PatientProfile> {
           // backgroundColor: Colors.indigo,
           title: "Profile".text.xl3.bold.color(context.accentColor).make(),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             color: context.accentColor,
             onPressed: () => Navigator.of(context).pop(),
           ),
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () => _update(),
-                  child: Icon(
+                  child: const Icon(
                     Icons.edit,
                     size: 26.0,
                   ),
@@ -253,7 +255,7 @@ class _PatientProfileState extends State<PatientProfile> {
           Container(
             height: 200,
             width: 200,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
                     "assets/Images/patient2-01.png",
@@ -269,7 +271,7 @@ class _PatientProfileState extends State<PatientProfile> {
             edge: VxEdge.TOP,
             child: SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                 width: context.screenWidth,
                 color: context.cardColor,
                 child: Column(
@@ -285,7 +287,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -294,11 +296,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$name"
+                              name
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -317,7 +319,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -326,11 +328,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$email"
+                              email
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -349,7 +351,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -358,11 +360,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$gender"
+                              gender
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -375,7 +377,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -384,11 +386,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$age"
+                              age
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -407,7 +409,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -416,11 +418,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$cnic"
+                              cnic
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -439,7 +441,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -448,11 +450,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$phonenumber"
+                              phonenumber
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -471,7 +473,7 @@ class _PatientProfileState extends State<PatientProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -480,11 +482,11 @@ class _PatientProfileState extends State<PatientProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$address"
+                              address
                                   .text
                                   .xl
                                   .color(context.accentColor)

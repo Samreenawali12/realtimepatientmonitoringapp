@@ -41,7 +41,7 @@ TextFormField reuseableTextField(
       floatingLabelBehavior: FloatingLabelBehavior.never,
       fillColor: Colors.indigo.withOpacity(0.3),
       border: OutlineInputBorder(
-        borderSide: BorderSide(width: 0, style: BorderStyle.none),
+        borderSide: const BorderSide(width: 0, style: BorderStyle.none),
         borderRadius: BorderRadius.circular(30),
       ),
     ),

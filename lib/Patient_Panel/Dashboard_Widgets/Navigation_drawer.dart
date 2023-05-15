@@ -28,16 +28,18 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
         .collection("Patients")
         .doc(user?.uid)
         .get();
-    if (mounted)
+    if (mounted) {
       setState(() {
-        Visibility(visible: true, child: CircularProgressIndicator());
+        const Visibility(visible: true, child: CircularProgressIndicator());
         if (vari.data() != null) {
           name = vari.data()!['P_Name'].toString();
           email = vari.data()!['P_Email'].toString();
         }
       });
+    }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -72,25 +74,25 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
             ),
             child: Column(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 50,
                   backgroundColor: Colors.transparent,
                   backgroundImage: AssetImage("assets/Images/profile.png"),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 12,
                 ),
                 Text(
-                  "$name",
-                  style: TextStyle(
+                  name,
+                  style: const TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
                 Text(
-                  "$email",
-                  style: TextStyle(
+                  email,
+                  style: const TextStyle(
                     fontSize: 16,
                     color: Colors.white,
                   ),
@@ -124,7 +126,7 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
         title: const Text("Update profile"),
         onTap: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => PatientProfile()));
+              .push(MaterialPageRoute(builder: (context) => const PatientProfile()));
         },
       ),
       ListTile(
@@ -133,7 +135,7 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => ChangePassword(),
+              builder: (context) => const ChangePassword(),
             ),
           );
         },
@@ -144,7 +146,7 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => P_History(),
+              builder: (context) => const P_History(),
             ),
           );
         },
@@ -164,7 +166,7 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
           authFunction().signOut();
           print('Signed out');
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => SignInScreen()));
+              context, MaterialPageRoute(builder: (context) => const SignInScreen()));
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(

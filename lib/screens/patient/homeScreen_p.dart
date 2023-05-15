@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  @override
   void initState() {
     getData();
     super.initState();
@@ -104,12 +105,12 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           Center(
             child: ElevatedButton(
-              child: Text("Log Out"),
+              child: const Text("Log Out"),
               onPressed: () async {
                 authFunction().signOut();
                 print('Signed out');
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => SignInScreen()));
+                    MaterialPageRoute(builder: (context) => const SignInScreen()));
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(
                     content: Text(

@@ -1,12 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Admin_Panel/Pages/Admin_Page.dart';
 import 'package:dbtest/Admin_Panel/Pages/Adminprofile.dart';
 import 'package:dbtest/Admin_Panel/Pages/History_Page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-
 import '../../screens/signInScreen.dart';
 import '../Dashboard.dart';
 
@@ -37,7 +34,8 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   }
 
   @override
-  void initState() {
+  void initState() 
+  {
     getData();
     super.initState();
   }
@@ -76,7 +74,7 @@ Widget buildHeader(BuildContext context) {
             bottom: 24,
           ),
           child: Column(
-            children: [
+            children: const [
               CircleAvatar(
                 radius: 50,
                 backgroundColor: Colors.transparent,
@@ -124,7 +122,7 @@ Widget buildMenuItems(BuildContext context) {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => AdminProfile(),
+              builder: (context) => const AdminProfile(),
             ),
           );
         },
@@ -135,7 +133,7 @@ Widget buildMenuItems(BuildContext context) {
         onTap: () {
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => A_History(),
+              builder: (context) => const A_History(),
             ),
           );
         },
@@ -146,7 +144,7 @@ Widget buildMenuItems(BuildContext context) {
         title: const Text("Logout"),
         onTap: () {
           Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => SignInScreen()));
+              context, MaterialPageRoute(builder: (context) => const SignInScreen()));
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(

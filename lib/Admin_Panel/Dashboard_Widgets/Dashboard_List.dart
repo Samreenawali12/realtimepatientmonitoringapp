@@ -20,7 +20,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
   String email = '';
   String password = '';
   void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     var vari = await FirebaseFirestore.instance
         .collection("Admin")
         .doc(user?.uid)
@@ -35,6 +35,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
     });
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -46,7 +47,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
     return Column(
       children: [
         Container(
-            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
             height: 130,
             width: double.maxFinite,
             child: Card(
@@ -55,25 +56,25 @@ class _A_DashboardListState extends State<A_DashboardList> {
               child: Container(
                 child: Row(
                   children: [
-                    CircleAvatar(
+                    const CircleAvatar(
                       radius: 50,
                       backgroundColor: Color.fromARGB(0, 51, 0, 75),
                       backgroundImage: AssetImage("assets/Images/admin.webp"),
                     ),
-                    "$name".text.xl.color(context.accentColor).make().p8(),
+                    name.text.xl.color(context.accentColor).make().p8(),
                   ],
                 ),
               ),
             )),
         Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: size.height / 6,
           width: double.maxFinite,
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => AdminPage(),
+                  builder: (context) => const AdminPage(),
                 ),
               );
             },
@@ -87,7 +88,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
                     Container(
                       height: size.height / 7,
                       width: size.width / 6.5,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(
                               "assets/Images/admin.webp",
@@ -111,14 +112,14 @@ class _A_DashboardListState extends State<A_DashboardList> {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: size.height / 6,
           width: double.maxFinite,
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => DoctorPage(),
+                  builder: (context) => const DoctorPage(),
                 ),
               );
             },
@@ -132,7 +133,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
                     Container(
                       height: size.height / 7,
                       width: size.width / 6.5,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(
                               "assets/Images/DoctorImage-01.png",
@@ -156,14 +157,14 @@ class _A_DashboardListState extends State<A_DashboardList> {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: size.height / 6,
           width: double.maxFinite,
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => PatientPage(),
+                  builder: (context) => const PatientPage(),
                 ),
               );
             },
@@ -177,7 +178,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
                     Container(
                       height: size.height / 6,
                       width: size.width / 6,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(
                               "assets/Images/PatientImage-01.png",
@@ -201,14 +202,14 @@ class _A_DashboardListState extends State<A_DashboardList> {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(10, 10, 10, 0),
+          padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           height: size.height / 6,
           width: double.maxFinite,
           child: InkWell(
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => A_History(),
+                  builder: (context) => const A_History(),
                 ),
               );
             },
@@ -222,7 +223,7 @@ class _A_DashboardListState extends State<A_DashboardList> {
                     Container(
                       height: size.height / 6,
                       width: size.width / 6,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         image: DecorationImage(
                             image: AssetImage(
                               "assets/Images/adminImage-01.png",

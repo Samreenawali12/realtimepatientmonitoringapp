@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AdminPage extends StatefulWidget {
-  AdminPage({Key? key}) : super(key: key);
+  const AdminPage({Key? key}) : super(key: key);
 
   @override
   State<AdminPage> createState() => _AdminPageState();
@@ -22,7 +22,7 @@ class _AdminPageState extends State<AdminPage> {
       FirebaseFirestore.instance.collection('Admin');
   FirebaseAuth auth = FirebaseAuth.instance;
 
-  Future<void> _create([DocumentSnapshot? documentSnapshot]) async {
+  Future<void> _create() async {
     await showModalBottomSheet(
         isScrollControlled: true,
         context: context,
@@ -256,7 +256,7 @@ class _AdminPageState extends State<AdminPage> {
           // backgroundColor: Colors.indigo,
           title: "Admin Panel".text.xl4.bold.color(context.accentColor).make(),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             color: context.accentColor,
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -274,7 +274,7 @@ class _AdminPageState extends State<AdminPage> {
                   final DocumentSnapshot documentSnapshot = AdminDocs[index];
                   return Card(
                     //margin: const EdgeInsets.all(10),
-                    margin: EdgeInsets.symmetric(horizontal: 13, vertical: 10),
+                    margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 10),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22)),
                     //elevation: 5,

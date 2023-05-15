@@ -21,27 +21,40 @@ class NotificationService {
   NotificationService._internal();
 
   Future<void> initNotification() async {
-    final AndroidInitializationSettings initializationSettingsAndroid =
+    const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@drawable/ic_launcher');
 
-    final InitializationSettings initializationSettings =
+    const InitializationSettings initializationSettings =
         InitializationSettings(
       android: initializationSettingsAndroid,
     );
 
     //await flutterLocalNotificationsPlugin.initialize(initializationSettings);
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings,
-        onSelectNotification: selectNotification);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) {
+        switch (notificationResponse.notificationResponseType) {
+          case NotificationResponseType.selectedNotification:
+            selectNotification(notificationResponse.payload);
+            break;
+          case NotificationResponseType.selectedNotificationAction:
+            selectNotification(notificationResponse.payload);
+            break;
+        }
+      },
+    );
   }
 
-  void selectNotification(String? payload) {
-    // if (user == "doctor") {
-    Navigator.of(context).push(MaterialPageRoute(builder: (_) => docRequest()));
-    // } else {
-    //   Navigator.of(context).push(MaterialPageRoute(builder: (_) {
-    //     return Requesteddoc();
-    //   }));
-    // }
+  void selectNotification(response) {
+    if (user == "doctor") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const docRequest()));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return const Requesteddoc();
+      }));
+    }
   }
 
   Future<void> showNotification(int id, String title, String body,
@@ -55,6 +68,81 @@ class NotificationService {
       const NotificationDetails(
         android: AndroidNotificationDetails('channelid', 'channelname',
             importance: Importance.max,
+            playSound: true,
+            priority: Priority.max,
+            fullScreenIntent: true,
+            icon: '@drawable/ic_launcher'),
+      ),
+    );
+  }
+}
+
+class SpecialNotificationService {
+  static final SpecialNotificationService _notificationService =
+      SpecialNotificationService._internal();
+
+  factory SpecialNotificationService() {
+    return _notificationService;
+  }
+  var context;
+  var user;
+  var patientid;
+  var doctorid;
+
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  SpecialNotificationService._internal();
+
+  Future<void> initNotification() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@drawable/ic_launcher');
+
+    const InitializationSettings initializationSettings =
+        InitializationSettings(
+      android: initializationSettingsAndroid,
+    );
+
+    //await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+    await flutterLocalNotificationsPlugin.initialize(
+      initializationSettings,
+      onDidReceiveNotificationResponse:
+          (NotificationResponse notificationResponse) {
+        switch (notificationResponse.notificationResponseType) {
+          case NotificationResponseType.selectedNotification:
+            selectNotification(notificationResponse.payload);
+            break;
+          case NotificationResponseType.selectedNotificationAction:
+            selectNotification(notificationResponse.payload);
+            break;
+        }
+      },
+    );
+  }
+
+  void selectNotification(response) {
+    if (user == "doctor") {
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const docRequest()));
+    } else {
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) {
+        return const Requesteddoc();
+      }));
+    }
+  }
+
+  Future<void> showNotification(int id, String title, String body,
+      BuildContext context, String user) async {
+    this.context = context;
+    this.user = user;
+    await flutterLocalNotificationsPlugin.show(
+      id,
+      title,
+      body,
+      const NotificationDetails(
+        android: AndroidNotificationDetails('channelid', 'channelname',
+            importance: Importance.max,
+            playSound: true,
             priority: Priority.max,
             icon: '@drawable/ic_launcher'),
       ),

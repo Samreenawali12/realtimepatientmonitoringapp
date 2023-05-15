@@ -13,8 +13,7 @@ class PatientDashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<PatientDashboardPage>
-  with WidgetsBindingObserver
-     {
+    with WidgetsBindingObserver {
   // with WidgetsBindingObserver {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -25,6 +24,7 @@ class _DashboardPageState extends State<PatientDashboardPage>
     WidgetsBinding.instance.addObserver(this);
     setStatus("Online");
   }
+
   void setStatus(String status) async {
     await _firestore.collection('Patients').doc(_auth.currentUser?.uid).update({
       "status": status,
@@ -46,10 +46,10 @@ class _DashboardPageState extends State<PatientDashboardPage>
     });
   }
 
-  List<Widget> _pages = <Widget>[
-    DashboardList(),
-    Requesteddoc(),
-    P_History(),
+  final List<Widget> _pages = <Widget>[
+    const DashboardList(),
+    const Requesteddoc(),
+    const P_History(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class _DashboardPageState extends State<PatientDashboardPage>
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      drawer: PatientNavigationDrawer(),
+      drawer: const PatientNavigationDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

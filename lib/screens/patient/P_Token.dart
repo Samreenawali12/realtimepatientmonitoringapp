@@ -8,8 +8,8 @@ class PHandleToken {
       FirebaseFirestore.instance.collection("Patients");
   insertToken() async {
     //get token
-    var _fcm = FirebaseMessaging.instance;
-    final fcmToken = await _fcm.getToken();
+    var fcm = FirebaseMessaging.instance;
+    final fcmToken = await fcm.getToken();
     print("FCM token is :$fcmToken");
     //set Token
     PatientDoc.doc(user?.uid).update({"P_Token": fcmToken});

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class CompletedRequests extends StatefulWidget {
-  CompletedRequests({Key? key}) : super(key: key);
+  const CompletedRequests({Key? key}) : super(key: key);
 
   @override
   State<CompletedRequests> createState() => _CompletedRequestsState();
@@ -39,7 +39,7 @@ class _CompletedRequestsState extends State<CompletedRequests> {
   String rtime = "";
   void getCompletedData() async {
     User? PatientID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('R_id', isEqualTo: PatientID.uid)
@@ -87,9 +87,9 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                       .get(),
                   builder: (context, snapshot) {
                     if (snapshot.hasData) {
-                      if (snapshot.data!.docs.length > 0) {
+                      if (snapshot.data!.docs.isNotEmpty) {
                         final RequestDocs = snapshot.data!.docs;
-                        return Container(
+                        return SizedBox(
                           width: size.width / 1,
                           height: size.height * 0.7,
                           child: ListView.builder(
@@ -97,13 +97,13 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                               itemBuilder: (context, index) {
                                 final DocumentSnapshot documentSnapshot =
                                     RequestDocs[index];
-                                return Container(
+                                return SizedBox(
                                   height: size.height / 5.5,
                                   width: context.screenWidth,
                                   child: Card(
                                     color: context.cardColor,
                                     //margin: const EdgeInsets.all(10),
-                                    margin: EdgeInsets.symmetric(
+                                    margin: const EdgeInsets.symmetric(
                                         horizontal: 10, vertical: 5),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(22),
@@ -132,7 +132,7 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["D_Name"].toString()}"
+                                                      RequestDocs[index]["D_Name"].toString()
                                                           .text
                                                           .xl
                                                           .semiBold
@@ -161,7 +161,7 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Status"].toString()}"
+                                                      RequestDocs[index]["R_Status"].toString()
                                                           .text
                                                           .xl
                                                           .semiBold
@@ -190,7 +190,7 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_Time"].toString()}"
+                                                      RequestDocs[index]["R_Time"].toString()
                                                           .text
                                                           .medium
                                                           //
@@ -219,7 +219,7 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                                                   ),
                                                   Column(
                                                     children: [
-                                                      "${RequestDocs[index]["R_EndTime"].toString()}"
+                                                      RequestDocs[index]["R_EndTime"].toString()
                                                           .text
                                                           .medium
                                                           //
@@ -251,7 +251,7 @@ class _CompletedRequestsState extends State<CompletedRequests> {
                                 left: size.width / 6,
                                 top: size.width / 10,
                               )),
-                              Text(
+                              const Text(
                                 "No Cancelled History",
                                 style: TextStyle(
                                     fontSize: 20,

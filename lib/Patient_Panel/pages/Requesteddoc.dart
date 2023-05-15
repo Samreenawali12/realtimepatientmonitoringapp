@@ -1,12 +1,14 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Patient_Panel/pages/P_session.dart';
+import 'package:dbtest/constantfiles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class Requesteddoc extends StatefulWidget {
   final doctorID;
-  Requesteddoc({Key? key, this.doctorID}) : super(key: key);
+  const Requesteddoc({Key? key, this.doctorID}) : super(key: key);
 
   @override
   State<Requesteddoc> createState() => _RequesteddocState();
@@ -14,23 +16,23 @@ class Requesteddoc extends StatefulWidget {
 
 class _RequesteddocState extends State<Requesteddoc> {
   final currentUser = FirebaseAuth.instance;
-  String uId = '';
-  String name = '';
-  void getData() async {
-    User? patientID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
-        .collection('Patients')
-        .doc(patientID.uid)
-        .get();
-    setState(() {
-      if (vari.data() != null) {
-        uId = vari.data()!['P_id'].toString();
-        name = vari.data()!['P_Name'].toString();
-      } else {
-        name = "Received Empty Value";
-      }
-    });
-  }
+  // String uId = '';
+  // String name = '';
+  // void getData() async {
+  //   User? patientID = FirebaseAuth.instance.currentUser!;
+  //   var vari = await FirebaseFirestore.instance
+  //       .collection('Patients')
+  //       .doc(patientID.uid)
+  //       .get();
+  //   setState(() {
+  //     if (vari.data() != null) {
+  //       uId = vari.data()!['P_id'].toString();
+  //       name = vari.data()!['P_Name'].toString();
+  //     } else {
+  //       name = "Received Empty Value";
+  //     }
+  //   });
+  // }
 
   String docname = '';
   String docid = '';
@@ -39,9 +41,9 @@ class _RequesteddocState extends State<Requesteddoc> {
   String rmessage = "";
   void getRequestData() async {
     User? patientID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
-        .where('P_id', isEqualTo: patientID.uid)
+        .where('P_id', isEqualTo: pid)
         .where('R_Status', isEqualTo: "Requested")
         .snapshots() // real time page values update
         .listen((vari) {
@@ -62,7 +64,7 @@ class _RequesteddocState extends State<Requesteddoc> {
   String message = "";
   void getAcceptedData() async {
     User? patientID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('P_id', isEqualTo: patientID.uid)
@@ -82,13 +84,14 @@ class _RequesteddocState extends State<Requesteddoc> {
         setState(() {
           message = "No Request Found";
           rmessage = "No";
+          rstatus = "cancelled";
         });
       }
     });
   }
 
+  @override
   void initState() {
-    getData();
     getRequestData();
     super.initState();
   }
@@ -104,7 +107,7 @@ class _RequesteddocState extends State<Requesteddoc> {
             "Requested Doctors".text.xl3.bold.color(context.accentColor).make(),
       ),
       body: SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
           height: size.height / 1,
           //color: Colors.white,
           child: Padding(
@@ -147,7 +150,7 @@ class _RequesteddocState extends State<Requesteddoc> {
                                                 Map<String, dynamic>>>(
                                         future: FirebaseFirestore.instance
                                             .collection('Requests')
-                                            .where('P_id', isEqualTo: uId)
+                                            .where('P_id', isEqualTo: pid)
                                             .get(),
                                         builder: (context, snapshot) {
                                           if (snapshot.hasData) {
@@ -201,8 +204,8 @@ class _RequesteddocState extends State<Requesteddoc> {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                     ),
-                                    Text('$rmessage',
-                                        style: TextStyle(
+                                    Text(rmessage,
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontSize: 20)),
@@ -222,38 +225,37 @@ class _RequesteddocState extends State<Requesteddoc> {
                   height: 30,
                   color: Color.fromARGB(255, 120, 119, 119),
                 ),
+                Column(
+                    //mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Text(
+                        "Requested Doctor",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 22),
+                      ),
+                    ]),
                 Container(
-                  child: Column(
-                      //mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
-                          "Requested Doctor",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 22),
-                        ),
-                      ]),
-                ),
-                Container(
-                  height: size.height / 3.5,
+                  // height: size.height / 3.5,
                   width: context.screenWidth,
                   padding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width / 50),
                   child: Card(
                     color: context.cardColor,
                     //margin: const EdgeInsets.all(10),
-                    margin: EdgeInsets.symmetric(horizontal: 13, vertical: 5),
+                    margin:
+                        const EdgeInsets.symmetric(horizontal: 13, vertical: 5),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(22),
                     ),
                     elevation: 4,
                     child: Column(
                       children: [
-                        '$rstatus' == "Requested"
+                        rstatus == "Requested"
                             ? Row(children: [
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    "Patient Name: $name"
+                                    "Patient Name: $Pname"
                                         .text
                                         .xl
                                         .color(context.accentColor)
@@ -278,17 +280,12 @@ class _RequesteddocState extends State<Requesteddoc> {
                                         padding: EdgeInsets.only(
                                             left: size.width / 2)),
                                     Padding(
-                                      padding: EdgeInsets.only(left: 15.0),
+                                      padding:
+                                          const EdgeInsets.only(left: 15.0),
                                       child: ElevatedButton(
-                                        child: Text(
-                                          'Cancel Request',
-                                          style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
-                                        ),
                                         style: ElevatedButton.styleFrom(
-                                          primary:
-                                              Color.fromARGB(255, 185, 0, 0),
+                                          backgroundColor: const Color.fromARGB(
+                                              255, 185, 0, 0),
                                         ),
                                         onPressed: () async {
                                           FirebaseFirestore.instance
@@ -302,22 +299,28 @@ class _RequesteddocState extends State<Requesteddoc> {
                                           Navigator.of(context).pushReplacement(
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  Requesteddoc(),
+                                                  const Requesteddoc(),
                                             ),
                                           );
                                         },
+                                        child: const Text(
+                                          'Cancel Request',
+                                          style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.bold),
+                                        ),
                                       ),
                                     ),
                                   ],
                                 ),
                               ])
                             : Container(),
-                        '$rstatus' == "Accepted"
+                        rstatus == "Accepted"
                             ? Column(
                                 children: [
                                   Row(
                                     children: [
-                                      Padding(
+                                      const Padding(
                                           padding: EdgeInsets.only(
                                               left: 20, top: 100)),
                                       Text(
@@ -325,8 +328,8 @@ class _RequesteddocState extends State<Requesteddoc> {
                                         style: TextStyle(
                                             fontSize: size.width / 20,
                                             fontWeight: FontWeight.bold,
-                                            color:
-                                                Color.fromARGB(255, 42, 7, 99)),
+                                            color: const Color.fromARGB(
+                                                255, 42, 7, 99)),
                                       ),
                                     ],
                                   ),
@@ -338,17 +341,23 @@ class _RequesteddocState extends State<Requesteddoc> {
                                               padding: EdgeInsets.only(
                                                   left: size.width / 2)),
                                           ElevatedButton(
-                                            child: Text(
+                                            child: const Text(
                                               'Start session',
                                               style: TextStyle(
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.bold),
                                             ),
                                             onPressed: () async {
-                                              Navigator.of(context).push(
+                                              // Navigator.of(context).push(
+                                              //   MaterialPageRoute(
+                                              //     builder: (context) =>
+                                              //         const P_Session(),
+                                              //   ),
+                                              // );
+                                               Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      P_Session(),
+                                                      P_Session(R_ID: ruid),
                                                 ),
                                               );
                                             },
@@ -361,14 +370,8 @@ class _RequesteddocState extends State<Requesteddoc> {
                                               padding: EdgeInsets.only(
                                                   left: size.width / 9)),
                                           ElevatedButton(
-                                            child: Text(
-                                              'Cancel it',
-                                              style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
                                             style: ElevatedButton.styleFrom(
-                                              primary: Color.fromARGB(
+                                              backgroundColor: const Color.fromARGB(
                                                   255, 185, 0, 0),
                                               //onPrimary: Colors.black,
                                             ),
@@ -385,10 +388,16 @@ class _RequesteddocState extends State<Requesteddoc> {
                                                   .pushReplacement(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      Requesteddoc(),
+                                                      const Requesteddoc(),
                                                 ),
                                               );
                                             },
+                                            child: const Text(
+                                              'Cancel it',
+                                              style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
                                           ),
                                         ],
                                       )
@@ -405,9 +414,11 @@ class _RequesteddocState extends State<Requesteddoc> {
                               left: size.width / 6,
                               top: size.width / 10,
                             )),
+
+                            //request status print when no request found
                             Text(
-                              "$message",
-                              style: TextStyle(
+                              message,
+                              style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 42, 7, 99)),

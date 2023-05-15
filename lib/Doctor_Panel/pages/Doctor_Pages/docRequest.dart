@@ -1,15 +1,13 @@
-import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/D_Session.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:http/http.dart';
-import '../../../Patient_Panel/pages/P_session.dart';
+import '../../../functions/NotificationAPI.dart';
 
 class docRequest extends StatefulWidget {
   final patientID;
-  docRequest({Key? key, this.patientID}) : super(key: key);
+  const docRequest({Key? key, this.patientID}) : super(key: key);
 
   @override
   State<docRequest> createState() => _docRequestState();
@@ -43,7 +41,7 @@ class _docRequestState extends State<docRequest> {
   String rmessage = "";
   void getRequestData() async {
     User? DoctorID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('D_id', isEqualTo: DoctorID.uid)
@@ -68,7 +66,7 @@ class _docRequestState extends State<docRequest> {
   String message = "";
   void getAcceptedData() async {
     User? DoctorID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('D_id', isEqualTo: DoctorID.uid)
@@ -93,33 +91,30 @@ class _docRequestState extends State<docRequest> {
   }
 
   String ptoken = '';
-  Future<String> sendNotifcation(
-     {required String title,
-      required String BODY,
-      required String Token
-      }) async {
-    Map<String, dynamic> body = {
-      "to": "$Token",
-      "notification": {"body": "$BODY", "title": "$title"},
-      "data": {
-        "doctorID": "$uId",
-        "doctorName": "$name",
-      },
-    };
-    final msg = jsonEncode(body);
-    Map<String, String> headers = {
-      "Content-Type": "application/json",
-      "Authorization":
-          "key=AAAANLrY2CU:APA91bEdhKkzCHU7IdUSwusI8vc-6kdgaInhCNIqXzGplbBGeEexiIiz1RAV6iCB-vWxDqV0NMHCkcmDt_F9Jz3Ipi65WU5z0za5HFqpoLv2gC48VJErD8_6PZBMaO0xlAhCKm-eJbfN"
-    };
-    Response response = await post(
-        Uri.parse('https://fcm.googleapis.com/fcm/send'),
-        headers: headers,
-        body: msg);
-    print(response.body.toString());
-    return response.body;
-  }
-
+  // Future<String> sendNotifcation(
+  //     String title, String BODY, String Token) async {
+  //   Map<String, dynamic> body = {
+  //     "to": "$Token",
+  //     "notification": {"body": "$BODY", "title": "$title"},
+  //     "data": {
+  //       "doctorID": "$uId",
+  //       "doctorName": "$name",
+  //     },
+  //   };
+  //   final msg = jsonEncode(body);
+  //   Map<String, String> headers = {
+  //     "Content-Type": "application/json",
+  //     "Authorization":
+  //         "key=AAAANLrY2CU:APA91bEdhKkzCHU7IdUSwusI8vc-6kdgaInhCNIqXzGplbBGeEexiIiz1RAV6iCB-vWxDqV0NMHCkcmDt_F9Jz3Ipi65WU5z0za5HFqpoLv2gC48VJErD8_6PZBMaO0xlAhCKm-eJbfN"
+  //   };
+  //   Response response = await post(
+  //       Uri.parse('https://fcm.googleapis.com/fcm/send'),
+  //       headers: headers,
+  //       body: msg);
+  //   print(response.body.toString());
+  //   return response.body;
+  // }
+  @override
   void initState() {
     getDoctorData();
     getRequestData();
@@ -132,7 +127,7 @@ class _docRequestState extends State<docRequest> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Text(
           "Request",
           style: TextStyle(
@@ -237,8 +232,8 @@ class _docRequestState extends State<docRequest> {
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white),
                                     ),
-                                    Text('$rmessage',
-                                        style: TextStyle(
+                                    Text(rmessage,
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
                                             fontSize: 20)),
@@ -261,8 +256,8 @@ class _docRequestState extends State<docRequest> {
                 Container(
                   child: Column(
                       //mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Patient's Requests",
                           style: TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 22),
@@ -278,7 +273,7 @@ class _docRequestState extends State<docRequest> {
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
                         final RequestDocs = snapshot.data!.docs;
-                        return Container(
+                        return SizedBox(
                           width: size.width / 1,
                           height: size.height * 0.8,
                           child: ListView.builder(
@@ -286,7 +281,7 @@ class _docRequestState extends State<docRequest> {
                               itemBuilder: (context, index) {
                                 final DocumentSnapshot documentSnapshot =
                                     RequestDocs[index];
-                                return Container(
+                                return SizedBox(
                                   height: size.height / 5.5,
                                   width: context.screenWidth,
                                   child: Card(
@@ -307,10 +302,10 @@ class _docRequestState extends State<docRequest> {
                                           Container(
                                             height: 80,
                                             width: 80,
-                                            padding: EdgeInsets.only(
+                                            padding: const EdgeInsets.only(
                                                 left: 10, top: 10),
                                             // alignment: Alignment.centerLeft,
-                                            decoration: BoxDecoration(
+                                            decoration: const BoxDecoration(
                                               image: DecorationImage(
                                                   image: AssetImage(
                                                     "assets/Images/PatientImage-01.png",
@@ -323,7 +318,7 @@ class _docRequestState extends State<docRequest> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              "${RequestDocs[index]["P_Name"].toString()}"
+                                              RequestDocs[index]["P_Name"].toString()
                                                   .text
                                                   .bold
                                                   .xl2
@@ -332,7 +327,7 @@ class _docRequestState extends State<docRequest> {
                                                   .px8()
                                                   .pOnly(top: 4),
                                               ElevatedButton(
-                                                child: Text('Accept Request'),
+                                                child: const Text('Accept Request'),
                                                 onPressed: () async {
                                                   var PatientId =
                                                       RequestDocs[index]["P_id"]
@@ -346,7 +341,7 @@ class _docRequestState extends State<docRequest> {
                                                               isEqualTo: uId)
                                                           .where('P_id',
                                                               isEqualTo:
-                                                                  '$PatientId')
+                                                                  PatientId)
                                                           .where('R_Status',
                                                               isEqualTo:
                                                                   "Requested")
@@ -366,13 +361,15 @@ class _docRequestState extends State<docRequest> {
                                                       ptoken = vari
                                                           .data()!['P_Token']
                                                           .toString();
-                                                      await sendNotifcation(
-                                                          title: "$name",
-                                                          BODY: "Doctor has accepted your request\n kindly start your session",
-                                                          Token: ptoken,
-                                                         );
+                                                      sendNotifcation(
+                                                          title: name,
+                                                          message:
+                                                              "Doctor has accepted your request\n kindly start your session",
+                                                          token: ptoken,
+                                                          doctorId: uId,
+                                                          doctorName: name);
                                                     }
-
+                                                    
                                                     User? DoctorID =
                                                         FirebaseAuth.instance
                                                             .currentUser!;
@@ -386,7 +383,9 @@ class _docRequestState extends State<docRequest> {
                                                         .pushReplacement(
                                                       MaterialPageRoute(
                                                         builder: (context) =>
-                                                            D_Session(),
+                                                            D_Session(
+                                                          patientInfo: vari,
+                                                        ),
                                                       ),
                                                     );
                                                   }
@@ -403,15 +402,8 @@ class _docRequestState extends State<docRequest> {
                                                       left: size.width / 4,
                                                       top: size.width / 14)),
                                               ElevatedButton(
-                                                child: Text(
-                                                  'Decline',
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
                                                 style: ElevatedButton.styleFrom(
-                                                  primary: Color.fromARGB(
+                                                  backgroundColor: const Color.fromARGB(
                                                       255, 185, 0, 0),
                                                   //onPrimary: Colors.black,
                                                 ),
@@ -428,10 +420,17 @@ class _docRequestState extends State<docRequest> {
                                                       .pushReplacement(
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          docRequest(),
+                                                          const docRequest(),
                                                     ),
                                                   );
                                                 },
+                                                child: const Text(
+                                                  'Decline',
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
                                               ),
                                             ],
                                           )
@@ -453,8 +452,8 @@ class _docRequestState extends State<docRequest> {
                               top: size.width / 10,
                             )),
                             Text(
-                              "$message",
-                              style: TextStyle(
+                              message,
+                              style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Color.fromARGB(255, 42, 7, 99)),

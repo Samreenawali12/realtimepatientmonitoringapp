@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
 class AdminProfile extends StatefulWidget {
-  AdminProfile({Key? key}) : super(key: key);
+  const AdminProfile({Key? key}) : super(key: key);
 
   @override
   State<AdminProfile> createState() => _AdminProfileState();
@@ -18,12 +18,12 @@ class _AdminProfileState extends State<AdminProfile> {
   String password = '';
   String gender = '';
   void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     var vari = await FirebaseFirestore.instance
         .collection("Admin")
         .doc(user?.uid)
         .get();
-    if (mounted)
+    if (mounted) {
       setState(() {
         if (vari.data() != null) {
           pUID = vari.data()!['A_Id'].toString();
@@ -33,8 +33,10 @@ class _AdminProfileState extends State<AdminProfile> {
           password = vari.data()!['A_Password'].toString();
         }
       });
+    }
   }
 
+  @override
   void initState() {
     super.initState();
     getData();
@@ -84,7 +86,7 @@ class _AdminProfileState extends State<AdminProfile> {
                     final String Name = _P_NameController.text;
                     final String Address = _P_AddressController.text;
                     final String Password = _P_PasswordController.text;
-                    User? user = await FirebaseAuth.instance.currentUser;
+                    User? user = FirebaseAuth.instance.currentUser;
                     if (user != null) {
                       await FirebaseFirestore.instance
                           .collection("Admin")
@@ -115,16 +117,16 @@ class _AdminProfileState extends State<AdminProfile> {
           // backgroundColor: Colors.indigo,
           title: "Profile".text.xl3.bold.color(context.accentColor).make(),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             color: context.accentColor,
             onPressed: () => Navigator.of(context).pop(),
           ),
           actions: <Widget>[
             Padding(
-                padding: EdgeInsets.only(right: 20.0),
+                padding: const EdgeInsets.only(right: 20.0),
                 child: GestureDetector(
                   onTap: () => _update(),
-                  child: Icon(
+                  child: const Icon(
                     Icons.edit,
                     size: 26.0,
                   ),
@@ -136,7 +138,7 @@ class _AdminProfileState extends State<AdminProfile> {
           Container(
             height: 200,
             width: 200,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(
                     "assets/Images/admin.webp",
@@ -152,7 +154,7 @@ class _AdminProfileState extends State<AdminProfile> {
             edge: VxEdge.TOP,
             child: SingleChildScrollView(
               child: Container(
-                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
                 width: context.screenWidth,
                 color: context.cardColor,
                 child: Column(
@@ -168,7 +170,7 @@ class _AdminProfileState extends State<AdminProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -177,11 +179,11 @@ class _AdminProfileState extends State<AdminProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$name"
+                              name
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -200,7 +202,7 @@ class _AdminProfileState extends State<AdminProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -209,11 +211,11 @@ class _AdminProfileState extends State<AdminProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$email"
+                              email
                                   .text
                                   .xl
                                   .color(context.accentColor)
@@ -232,7 +234,7 @@ class _AdminProfileState extends State<AdminProfile> {
                     Card(
                       elevation: 5,
                       color: context.canvasColor,
-                      shape: StadiumBorder(
+                      shape: const StadiumBorder(
                         side: BorderSide(
                           color: Colors.transparent,
                           width: 2.0,
@@ -241,11 +243,11 @@ class _AdminProfileState extends State<AdminProfile> {
                       child: Container(
                         height: 50,
                         width: 400,
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              "$password"
+                              password
                                   .text
                                   .xl
                                   .color(context.accentColor)

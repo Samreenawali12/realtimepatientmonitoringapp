@@ -43,7 +43,7 @@ class _signUpScreenState extends State<signUpScreen> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
         ),
         child: SingleChildScrollView(
@@ -74,7 +74,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.person_outlined,
                       color: Colors.indigo,
                     ),
@@ -85,7 +85,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -113,7 +113,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.mail_outline,
                       color: Colors.indigo,
                     ),
@@ -124,7 +124,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -156,7 +156,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.mail_outline,
                       color: Colors.indigo,
                     ),
@@ -167,7 +167,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -191,7 +191,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.home,
                       color: Colors.indigo,
                     ),
@@ -202,7 +202,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -231,7 +231,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.phone_android,
                       color: Colors.indigo,
                     ),
@@ -242,7 +242,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -268,7 +268,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.calendar_today,
                       color: Colors.indigo,
                     ),
@@ -279,7 +279,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -308,7 +308,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   cursorColor: Colors.indigo,
                   style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                   decoration: InputDecoration(
-                    prefixIcon: Icon(
+                    prefixIcon: const Icon(
                       Icons.card_membership_outlined,
                       color: Colors.indigo,
                     ),
@@ -319,7 +319,7 @@ class _signUpScreenState extends State<signUpScreen> {
                     floatingLabelBehavior: FloatingLabelBehavior.never,
                     fillColor: Colors.indigo.withOpacity(0.3),
                     border: OutlineInputBorder(
-                      borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                      borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
@@ -332,9 +332,9 @@ class _signUpScreenState extends State<signUpScreen> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
+                  children: const [
                     Padding(
-                      padding: const EdgeInsets.only(left: 15),
+                      padding: EdgeInsets.only(left: 15),
                       child: Text(
                         "Gender",
                         style: TextStyle(
@@ -346,7 +346,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   ],
                 ),
                 RadioListTile(
-                  title: Text("Male"),
+                  title: const Text("Male"),
                   value: "Male",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -358,7 +358,7 @@ class _signUpScreenState extends State<signUpScreen> {
                   },
                 ),
                 RadioListTile(
-                  title: Text("Female"),
+                  title: const Text("Female"),
                   value: "Female",
                   groupValue: radiovalue,
                   onChanged: (value) {
@@ -417,7 +417,7 @@ class _signUpScreenState extends State<signUpScreen> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => SignInScreen()))
+                                      builder: (context) => const SignInScreen()))
                             })
                         .onError(
                           (error, stackTrace) => {
@@ -447,7 +447,7 @@ class _signUpScreenState extends State<signUpScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignInScreen(),
+                                builder: (context) => const SignInScreen(),
                               ),
                             )
                           },

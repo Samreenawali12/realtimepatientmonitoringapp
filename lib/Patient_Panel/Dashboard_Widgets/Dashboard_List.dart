@@ -1,13 +1,11 @@
-import 'dart:async';
-import 'package:flutter/widgets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Patient_Panel/pages/AllDoctors.dart';
 import 'package:dbtest/Patient_Panel/pages/Patientprofile.dart';
 import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/sensorguide.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../pages/SensorDataPage.dart';
 
@@ -19,8 +17,6 @@ class DashboardList extends StatefulWidget {
 }
 
 class _DashboardListState extends State<DashboardList> {
-  //set variable for Connectivity subscription listiner
-  StreamSubscription? internetconnection;
   bool isoffline = false;
   // get current user
   final currentUser = FirebaseAuth.instance;
@@ -42,28 +38,8 @@ class _DashboardListState extends State<DashboardList> {
     });
   }
 
+  @override
   void initState() {
-    // internetconnection = Connectivity()
-    //     .onConnectivityChanged
-    //     .listen((ConnectivityResult result) {
-    //   // whenevery connection status is changed.
-    //   if (result == ConnectivityResult.none) {
-    //     //there is no any connection
-    //     setState(() {
-    //       isoffline = true;
-    //     });
-    //   } else if (result == ConnectivityResult.mobile) {
-    //     //connection is mobile data network
-    //     setState(() {
-    //       isoffline = false;
-    //     });
-    //   } else if (result == ConnectivityResult.wifi) {
-    //     //connection is from wifi
-    //     setState(() {
-    //       isoffline = false;
-    //     });
-    //   }
-    // });
     getData();
     super.initState();
   }
@@ -76,14 +52,10 @@ class _DashboardListState extends State<DashboardList> {
   // }
   @override
   Widget build(BuildContext context) {
-    final Size = MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
         children: [
-          // Container(
-          //   child: errmsg("No Internet Connection Available", isoffline),
-          //   //to show internet connection message on isoffline = true.
-          // ),
           Container(
             padding:
                 EdgeInsets.only(left: MediaQuery.of(context).size.width / 25),
@@ -110,15 +82,14 @@ class _DashboardListState extends State<DashboardList> {
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
-            
-                  height: Size.height / 3.8,
-                  width: Size.width / 2.2,
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  //  height: size.height / 3.8,
+                  width: size.width / 2.2,
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => PatientProfile(),
+                          builder: (context) => const PatientProfile(),
                         ),
                       );
                       // getdata();
@@ -126,75 +97,73 @@ class _DashboardListState extends State<DashboardList> {
                     child: Card(
                       elevation: 5,
                       color: Colors.indigo,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/Images/profile.png",
-                                    ),
-                                    fit: BoxFit.fitWidth,
-                                    alignment: Alignment.center),
-                              ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.20, // 120,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/Images/profile.png",
+                                  ),
+                                  fit: BoxFit.fitWidth,
+                                  alignment: Alignment.center),
                             ),
-                            " Profile"
-                                .text
-                                .xl
-                                .bold
-                                .color(Colors.white)
-                                .make()
-                                .p8(),
-                          ],
-                        ),
+                          ),
+                          " Profile"
+                              .text
+                              .xl
+                              .bold
+                              .color(Colors.white)
+                              .make()
+                              .p8(),
+                        ],
                       ),
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   // height: 200,
                   // width: 175,
-                  height: Size.height / 3.8,
-                  width: Size.width / 2.2,
+                  // height: size.height / 3.8,
+                  width: size.width / 2.2,
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => AllDoctorsPage(),
+                          builder: (context) => const AllDoctorsPage(),
                         ),
                       );
                     },
                     child: Card(
                       elevation: 5,
                       color: Colors.indigo,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/Images/DoctorImage-01.png",
-                                    ),
-                                    fit: BoxFit.fitWidth,
-                                    alignment: Alignment.center),
-                              ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.20, // 120,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/Images/DoctorImage-01.png",
+                                  ),
+                                  fit: BoxFit.fitWidth,
+                                  alignment: Alignment.center),
                             ),
-                            " All Doctors"
-                                .text
-                                .xl
-                                .bold
-                                .color(Colors.white)
-                                .make()
-                                .p8(),
-                          ],
-                        ),
+                          ),
+                          " All Doctors"
+                              .text
+                              .xl
+                              .bold
+                              .color(Colors.white)
+                              .make()
+                              .p8(),
+                        ],
                       ),
                     ),
                   ),
@@ -208,58 +177,57 @@ class _DashboardListState extends State<DashboardList> {
             child: Row(
               children: [
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   // height: 200,
                   // width: 175,
-                  height: Size.height / 3.8,
-                  width: Size.width / 2.2,
+                  // height: size.height / 3.8,
+                  width: size.width / 2.2,
                   child: InkWell(
                     onTap: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => SensorDataPage(),
+                        builder: (context) => const SensorDataPage(),
                       ));
                     },
                     child: Card(
                       elevation: 5,
                       color: Colors.indigo,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/Images/adminImage-01.png",
-                                    ),
-                                    fit: BoxFit.fitWidth,
-                                    alignment: Alignment.center),
-                              ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.20, // 120,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/Images/vitals2-01.png",
+                                  ),
+                                  fit: BoxFit.fitWidth,
+                                  alignment: Alignment.center),
                             ),
-                            " Check your Vitals"
-                                .text
-                                .xl
-                                .bold
-                                .color(Colors.white)
-                                .make()
-                                .p8(),
-                          ],
-                        ),
+                          ),
+                          " Check your Vitals"
+                              .text
+                              .xl
+                              .bold
+                              .color(Colors.white)
+                              .make()
+                              .p8(),
+                        ],
                       ),
                     ),
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  padding: const EdgeInsets.fromLTRB(0, 10, 0, 0),
                   // height: 200,
                   // width: 175,
-                  height: Size.height / 3.8,
-                  width: Size.width / 2.2,
+                  // height: size.height / 3.8,
+                  width: size.width / 2.2,
                   child: InkWell(
                     onTap: () async {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => Requesteddoc(),
+                        builder: (context) => const Requesteddoc(),
                       ));
                       // DatabaseReference ref =
                       //     FirebaseDatabase.instance.ref("users/123");
@@ -272,35 +240,73 @@ class _DashboardListState extends State<DashboardList> {
                     child: Card(
                       elevation: 5,
                       color: Colors.indigo,
-                      child: Container(
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 120,
-                              width: 120,
-                              decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: AssetImage(
-                                      "assets/Images/Request-01.png",
-                                    ),
-                                    fit: BoxFit.fitWidth,
-                                    alignment: Alignment.center),
-                              ),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height *
+                                0.20, // 120,
+                            width: MediaQuery.of(context).size.width * 0.35,
+                            decoration: const BoxDecoration(
+                              image: DecorationImage(
+                                  image: AssetImage(
+                                    "assets/Images/Request2-01.png",
+                                  ),
+                                  fit: BoxFit.fitWidth,
+                                  alignment: Alignment.center),
                             ),
-                            "Request Doctor"
-                                .text
-                                .xl
-                                .bold
-                                .color(Colors.white)
-                                .make()
-                                .p8(),
-                          ],
-                        ),
+                          ),
+                          "Request Doctor"
+                              .text
+                              .xl
+                              .bold
+                              .color(Colors.white)
+                              .make()
+                              .p8(),
+                        ],
                       ),
                     ),
                   ),
                 ),
               ],
+            ),
+          ),
+          Container(
+            padding: EdgeInsets.only(
+                left: MediaQuery.of(context).size.width / 25,
+                top: MediaQuery.of(context).size.width / 25),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                "Sensor Guide".text.xl2.bold.color(context.accentColor).make(),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.fromLTRB(0, 5, 0, 0),
+            width: size.width / 1,
+            height: size.height / 10,
+            child: InkWell(
+              onTap: () async {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const sensorguide(),
+                ));
+              },
+              child: Card(
+                //elevation: 5,
+                //  color: Color.fromARGB(255, 255, 255, 255),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "RTHMS Sensor-kit Guide ",
+                      style: TextStyle(
+                          fontSize: size.width / 20,
+                          fontWeight: FontWeight.normal,
+                          color: context.accentColor),
+                    )
+                  ],
+                ),
+              ),
             ),
           ),
         ],

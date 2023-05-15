@@ -1,9 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../functions/auth.dart';
 import '../screens/signInScreen.dart';
 import 'Dashboard_Widgets/Dashboard_Home.dart';
+import 'Dashboard_Widgets/Navigation_drawer.dart' as myDrawer;
 import 'Pages/History_Page.dart';
 
 class A_DashboardPage extends StatefulWidget {
@@ -11,18 +10,18 @@ class A_DashboardPage extends StatefulWidget {
   @override
   State<A_DashboardPage> createState() => _A_DashboardPageState();
 }
-class _A_DashboardPageState extends State<A_DashboardPage> { 
+
+class _A_DashboardPageState extends State<A_DashboardPage> {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
   }
-
-  List<Widget> _pages = <Widget>[
-    A_DashboardHome(),
-    Text("Vitals history"),
-    A_History(),
+  final List<Widget> _pages = <Widget>[
+    const A_DashboardHome(),
+    const Text("Vitals history"),
+    const A_History(),
   ];
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class _A_DashboardPageState extends State<A_DashboardPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      drawer: const NavigationDrawer(children: [],),
+      drawer: const myDrawer.NavigationDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -54,12 +53,12 @@ class _A_DashboardPageState extends State<A_DashboardPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-         authFunction().signOut();
-             Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => SignInScreen()));
+          authFunction().signOut();
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => const SignInScreen()));
         },
-        child: Icon(Icons.logout),
         tooltip: 'Logout',
+        child: const Icon(Icons.logout),
       ),
     );
   }

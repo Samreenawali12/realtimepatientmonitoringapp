@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // import 'package:mychatapp/pages/Patient_Pages/signin_p.dart';
 
 class ChangePassPatient extends StatefulWidget {
-  ChangePassPatient({Key? key}) : super(key: key);
+  const ChangePassPatient({Key? key}) : super(key: key);
 
   @override
   _ChangePassPatientState createState() => _ChangePassPatientState();
@@ -33,10 +33,10 @@ class _ChangePassPatientState extends State<ChangePassPatient> {
       FirebaseAuth.instance.signOut();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => SignInScreen()),
+        MaterialPageRoute(builder: (context) => const SignInScreen()),
       );
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           backgroundColor: Colors.orangeAccent,
           content: Text(
             'Your Password has been Changed. Login again !',
@@ -51,7 +51,7 @@ class _ChangePassPatientState extends State<ChangePassPatient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           "Reset Password",
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
@@ -60,10 +60,10 @@ class _ChangePassPatientState extends State<ChangePassPatient> {
       body: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 30),
           child: ListView(children: [
             Container(
-              margin: EdgeInsets.symmetric(vertical: 10.0),
+              margin: const EdgeInsets.symmetric(vertical: 10.0),
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (value) {
@@ -85,7 +85,7 @@ class _ChangePassPatientState extends State<ChangePassPatient> {
                 cursorColor: Colors.indigo,
                 style: TextStyle(color: Colors.indigo.withOpacity(0.9)),
                 decoration: InputDecoration(
-                  prefixIcon: Icon(
+                  prefixIcon: const Icon(
                     Icons.mail_outline,
                     color: Colors.indigo,
                   ),
@@ -96,14 +96,14 @@ class _ChangePassPatientState extends State<ChangePassPatient> {
                   floatingLabelBehavior: FloatingLabelBehavior.never,
                   fillColor: Colors.indigo.withOpacity(0.3),
                   border: OutlineInputBorder(
-                    borderSide: BorderSide(width: 0, style: BorderStyle.none),
+                    borderSide: const BorderSide(width: 0, style: BorderStyle.none),
                     borderRadius: BorderRadius.circular(30),
                   ),
                 ),
                 keyboardType: TextInputType.visiblePassword,
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             MaterialButton(
@@ -124,11 +124,11 @@ class _ChangePassPatientState extends State<ChangePassPatient> {
                   });
                 }
               },
-              child: Text(
+              color: Colors.indigo[200],
+              child: const Text(
                 'Change Password',
                 style: TextStyle(fontSize: 18.0),
               ),
-              color: Colors.indigo[200],
             ),
           ]),
         ),

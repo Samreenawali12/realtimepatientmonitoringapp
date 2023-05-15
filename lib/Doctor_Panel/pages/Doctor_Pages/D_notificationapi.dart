@@ -31,7 +31,7 @@ class DocNotificationApi{
   String rmessage = "";
   void getRequestData() async {
     User? DoctorID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('D_id', isEqualTo: DoctorID.uid)
@@ -55,7 +55,7 @@ class DocNotificationApi{
   String message = "";
   void getAcceptedData() async {
     User? DoctorID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('D_id', isEqualTo: DoctorID.uid)
@@ -83,11 +83,11 @@ class DocNotificationApi{
   Future<String> sendNotifcation(
       String title, String BODY, String Token) async {
     Map<String, dynamic> body = {
-      "to": "$Token",
-      "notification": {"body": "$BODY", "title": "$title"},
+      "to": Token,
+      "notification": {"body": BODY, "title": title},
       "data": {
-        "doctorID": "$uId",
-        "doctorName": "$name",
+        "doctorID": uId,
+        "doctorName": name,
       },
     };
     final msg = jsonEncode(body);
