@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 
-class A_DashboardHeader extends StatelessWidget {
-  const A_DashboardHeader({super.key});
+// ignore: camel_case_types
+class aDashboardHeader extends StatelessWidget {
+  const aDashboardHeader({super.key});
 
   @override
   Widget build(BuildContext context) {

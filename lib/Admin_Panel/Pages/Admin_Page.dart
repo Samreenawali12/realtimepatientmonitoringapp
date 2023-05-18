@@ -12,11 +12,11 @@ class AdminPage extends StatefulWidget {
 
 class _AdminPageState extends State<AdminPage> {
   // text fields' controllers
-  final TextEditingController _A_IdController = TextEditingController();
-  final TextEditingController _A_AddressController = TextEditingController();
-  final TextEditingController _A_EmailController = TextEditingController();
-  final TextEditingController _A_PasswordController = TextEditingController();
-  final TextEditingController _A_NameController = TextEditingController();
+  final TextEditingController AIdController = TextEditingController();
+  final TextEditingController AAddressController = TextEditingController();
+  final TextEditingController AEmailController = TextEditingController();
+  final TextEditingController APasswordController = TextEditingController();
+  final TextEditingController ANameController = TextEditingController();
 
   final CollectionReference _Admin =
       FirebaseFirestore.instance.collection('Admin');
@@ -49,7 +49,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_NameController,
+                  controller: ANameController,
                   decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextFormField(
@@ -64,7 +64,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_EmailController,
+                  controller: AEmailController,
                   decoration: const InputDecoration(labelText: 'Email'),
                 ),
                 TextFormField(
@@ -81,7 +81,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_PasswordController,
+                  controller: APasswordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                   ),
@@ -94,7 +94,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_AddressController,
+                  controller: AAddressController,
                   decoration: const InputDecoration(labelText: 'Address'),
                 ),
                 const SizedBox(
@@ -104,10 +104,10 @@ class _AdminPageState extends State<AdminPage> {
                   child: const Text('Create'),
                   onPressed: () async {
                     //final num? aID = num.tryParse(_A_IdController.text);
-                    final String name = _A_NameController.text;
-                    final String email = _A_EmailController.text;
-                    final String address = _A_AddressController.text;
-                    final String password = _A_PasswordController.text;
+                    final String name = ANameController.text;
+                    final String email = AEmailController.text;
+                    final String address = AAddressController.text;
+                    final String password = APasswordController.text;
                     final User? user =
                         (await auth.createUserWithEmailAndPassword(
                       email: email,
@@ -125,10 +125,10 @@ class _AdminPageState extends State<AdminPage> {
                         "A_UID": UID,
                         "role": "admin"
                       });
-                      _A_NameController.text = '';
-                      _A_EmailController.text = '';
-                      _A_AddressController.text = '';
-                      _A_PasswordController.text = '';
+                      ANameController.text = '';
+                      AEmailController.text = '';
+                      AAddressController.text = '';
+                      APasswordController.text = '';
                       Navigator.of(context).pop();
                     }
                   },
@@ -141,10 +141,10 @@ class _AdminPageState extends State<AdminPage> {
 
   Future<void> _update([DocumentSnapshot? documentSnapshot]) async {
     if (documentSnapshot != null) {
-      _A_IdController.text = documentSnapshot['A_Id'].toString();
-      _A_NameController.text = documentSnapshot['A_Name'];
-      _A_AddressController.text = documentSnapshot['A_Address'];
-      _A_PasswordController.text = documentSnapshot['A_Password'].toString();
+      AIdController.text = documentSnapshot['A_Id'].toString();
+      ANameController.text = documentSnapshot['A_Name'];
+      AAddressController.text = documentSnapshot['A_Address'];
+      APasswordController.text = documentSnapshot['A_Password'].toString();
     }
     await showModalBottomSheet(
         isScrollControlled: true,
@@ -172,7 +172,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_NameController,
+                  controller: ANameController,
                   decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextFormField(
@@ -189,7 +189,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_PasswordController,
+                  controller: APasswordController,
                   decoration: const InputDecoration(
                     labelText: 'Password',
                   ),
@@ -202,7 +202,7 @@ class _AdminPageState extends State<AdminPage> {
                     }
                     return null;
                   },
-                  controller: _A_AddressController,
+                  controller: AAddressController,
                   decoration: const InputDecoration(labelText: 'Address'),
                 ),
                 const SizedBox(
@@ -211,10 +211,10 @@ class _AdminPageState extends State<AdminPage> {
                 ElevatedButton(
                   child: const Text('Update'),
                   onPressed: () async {
-                    final String name = _A_NameController.text;
-                    final String email = _A_EmailController.text;
-                    final String address = _A_AddressController.text;
-                    final String password = _A_PasswordController.text;
+                    final String name = ANameController.text;
+                    final String email = AEmailController.text;
+                    final String address = AAddressController.text;
+                    final String password = APasswordController.text;
                     if (password != null ||
                         email != "" ||
                         address != "" ||
@@ -227,10 +227,10 @@ class _AdminPageState extends State<AdminPage> {
                         "A_Address": address
                       });
 
-                      _A_NameController.text = '';
-                      _A_EmailController.text = '';
-                      _A_AddressController.text = '';
-                      _A_PasswordController.text = '';
+                      ANameController.text = '';
+                      AEmailController.text = '';
+                      AAddressController.text = '';
+                      APasswordController.text = '';
                       Navigator.of(context).pop();
                     }
                   },

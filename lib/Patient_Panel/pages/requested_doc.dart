@@ -1,6 +1,5 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Patient_Panel/pages/P_session.dart';
+import 'package:dbtest/Patient_Panel/pages/p_session.dart';
 import 'package:dbtest/constantfiles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,27 +15,28 @@ class Requesteddoc extends StatefulWidget {
 
 class _RequesteddocState extends State<Requesteddoc> {
   final currentUser = FirebaseAuth.instance;
-  // String uId = '';
-  // String name = '';
-  // void getData() async {
-  //   User? patientID = FirebaseAuth.instance.currentUser!;
-  //   var vari = await FirebaseFirestore.instance
-  //       .collection('Patients')
-  //       .doc(patientID.uid)
-  //       .get();
-  //   setState(() {
-  //     if (vari.data() != null) {
-  //       uId = vari.data()!['P_id'].toString();
-  //       name = vari.data()!['P_Name'].toString();
-  //     } else {
-  //       name = "Received Empty Value";
-  //     }
-  //   });
-  // }
+  String uId = '';
+  String name = '';
+  void getData() async {
+    User? patientID = FirebaseAuth.instance.currentUser!;
+    var vari = await FirebaseFirestore.instance
+        .collection('Patients')
+        .doc(patientID.uid)
+        .get();
+    setState(() {
+      if (vari.data() != null) {
+        uId = vari.data()!['P_id'].toString();
+        name = vari.data()!['P_Name'].toString();
+      } else {
+        name = "Received Empty Value";
+      }
+    });
+  }
 
   String docname = '';
   String docid = '';
   String rstatus = '';
+  String Pname = '';
   String ruid = '';
   String rmessage = "";
   void getRequestData() async {
@@ -51,6 +51,7 @@ class _RequesteddocState extends State<Requesteddoc> {
         if (vari.docs.isNotEmpty) {
           docid = vari.docs[0]['D_id'].toString();
           docname = vari.docs[0]['D_Name'].toString();
+          Pname = vari.docs[0]['P_Name'].toString();
           rstatus = vari.docs[0]['R_Status'].toString();
           ruid = vari.docs[0]['R_UID'].toString();
           rmessage = "Yes";
@@ -76,6 +77,7 @@ class _RequesteddocState extends State<Requesteddoc> {
           print(data.docs);
           docid = data.docs[0]['D_id'].toString();
           docname = data.docs[0]['D_Name'].toString();
+          Pname = data.docs[0]['P_Name'].toString();
           rstatus = data.docs[0]['R_Status'].toString();
           ruid = data.docs[0]['R_UID'].toString();
           rmessage = "Accepted";
@@ -354,7 +356,7 @@ class _RequesteddocState extends State<Requesteddoc> {
                                               //         const P_Session(),
                                               //   ),
                                               // );
-                                               Navigator.of(context).push(
+                                              Navigator.of(context).push(
                                                 MaterialPageRoute(
                                                   builder: (context) =>
                                                       P_Session(R_ID: ruid),
@@ -371,8 +373,9 @@ class _RequesteddocState extends State<Requesteddoc> {
                                                   left: size.width / 9)),
                                           ElevatedButton(
                                             style: ElevatedButton.styleFrom(
-                                              backgroundColor: const Color.fromARGB(
-                                                  255, 185, 0, 0),
+                                              backgroundColor:
+                                                  const Color.fromARGB(
+                                                      255, 185, 0, 0),
                                               //onPrimary: Colors.black,
                                             ),
                                             onPressed: () async {

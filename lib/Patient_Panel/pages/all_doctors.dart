@@ -1,7 +1,7 @@
 import 'dart:convert';
-import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/requested_doc.dart';
 import 'package:dbtest/Patient_Panel/pages/vitals.dart';
-import 'package:dbtest/Patient_Panel/pages/doctorProfile.dart';
+import 'package:dbtest/Patient_Panel/pages/doctor_Profile.dart';
 import 'package:http/http.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -18,9 +18,9 @@ class AllDoctorsPage extends StatefulWidget {
 class _AllDoctorsPageState extends State<AllDoctorsPage> {
   late Interpreter _interpreter;
   final List<double> _input = [
-    double.parse(oxygen),
-    double.parse(temprature),
-    double.parse(BPM)
+    double.parse(oxygen.value),
+    double.parse(temprature.value),
+    double.parse(BPM.value)
   ];
   late List<List<double>> _output;
   bool _isLoaded = false;
@@ -166,7 +166,8 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
       print('Interpreter is not initialized');
     }
   }
-//api 
+
+//api
   Future<String> sendNotifcation(
       {required String title,
       required String BODY,
@@ -261,7 +262,8 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                     child: Card(
                       color: context.cardColor,
                       //margin: const EdgeInsets.all(10),
-                      margin: const EdgeInsets.symmetric(horizontal: 13, vertical: 5),
+                      margin: const EdgeInsets.symmetric(
+                          horizontal: 13, vertical: 5),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(22),
                       ),
@@ -286,7 +288,8 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                DoctorDocs[index]["D_Name"].toString()
+                                DoctorDocs[index]["D_Name"]
+                                    .toString()
                                     .text
                                     .bold
                                     .xl2
@@ -294,18 +297,21 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                                     .make()
                                     .px8()
                                     .pOnly(top: 4),
-                                DoctorDocs[index]["D_Email"].toString()
+                                DoctorDocs[index]["D_Email"]
+                                    .toString()
                                     .text
                                     .bold
                                     .xl
                                     .textStyle(context.captionStyle)
                                     .make()
                                     .px8(),
-                                DoctorDocs[index]["status"].toString()
+                                DoctorDocs[index]["status"]
+                                    .toString()
                                     .text
                                     .bold
                                     .size(16)
-                                    .color(const Color.fromARGB(255, 73, 7, 180))
+                                    .color(
+                                        const Color.fromARGB(255, 73, 7, 180))
                                     .make()
                                     .px8(),
                                 Row(
@@ -318,7 +324,15 @@ class _AllDoctorsPageState extends State<AllDoctorsPage> {
                                         }),
                                     ElevatedButton(
                                         onPressed: () async {
-                                          _runInference(DoctorDocs[index]);
+                                          if (oxygen.value != '0' &&
+                                              BPM.value != '0') {
+                                            _runInference(DoctorDocs[index]);
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                                    content: Text(
+                                                        "Sensor not connected")));
+                                          }
                                         },
                                         child: const Text("Urgent Request"))
                                   ],

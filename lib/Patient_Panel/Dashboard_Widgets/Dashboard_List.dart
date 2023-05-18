@@ -1,13 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Patient_Panel/pages/AllDoctors.dart';
-import 'package:dbtest/Patient_Panel/pages/Patientprofile.dart';
-import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/patient_profile.dart';
+import 'package:dbtest/Patient_Panel/pages/requested_doc.dart';
+import 'package:dbtest/Patient_Panel/pages/all_Doctors.dart';
 import 'package:dbtest/Patient_Panel/pages/sensorguide.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
-
-import '../pages/SensorDataPage.dart';
+import '../pages/sensor_data_page.dart';
 
 class DashboardList extends StatefulWidget {
   const DashboardList({Key? key}) : super(key: key);

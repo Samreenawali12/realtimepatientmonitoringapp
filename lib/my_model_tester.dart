@@ -6,12 +6,17 @@ class ModelTester extends StatefulWidget {
   const ModelTester({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _ModelTesterState createState() => _ModelTesterState();
 }
 
 class _ModelTesterState extends State<ModelTester> {
   late Interpreter _interpreter;
-  final List<double> _input = [double.parse(temprature), double.parse(oxygen), double.parse(BPM)];
+  final List<double> _input = [
+    double.parse(temprature.value),
+    double.parse(oxygen.value),
+    double.parse(BPM.value)
+  ];
   late List<List<double>> _output;
   bool _isLoaded = false;
 
@@ -29,6 +34,7 @@ class _ModelTesterState extends State<ModelTester> {
         _isLoaded = true;
       });
     } catch (e) {
+      // ignore: avoid_print
       print('Failed to load model. $e');
     }
   }
@@ -41,6 +47,7 @@ class _ModelTesterState extends State<ModelTester> {
 
         double result = _output[0][0];
         String message = result > 0.5 ? 'Normal' : 'Critical';
+        // ignore: avoid_print
         print(message);
 
         showDialog(
@@ -61,9 +68,11 @@ class _ModelTesterState extends State<ModelTester> {
           },
         );
       } catch (e) {
+        // ignore: avoid_print
         print('Failed to run inference. $e');
       }
     } else {
+      // ignore: avoid_print
       print('Interpreter is not initialized');
     }
   }

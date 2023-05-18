@@ -1,9 +1,10 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
+import 'dashboard_header.dart';
+import 'dashboard_list.dart';
 
-import 'Dashboard_Header.dart';
-import 'Dashboard_List.dart';
-
+// ignore: camel_case_types
 class A_DashboardHome extends StatelessWidget {
   const A_DashboardHome({Key? key}) : super(key: key);
 
@@ -18,8 +19,8 @@ class A_DashboardHome extends StatelessWidget {
                   crossAxisAlignment:
                    CrossAxisAlignment.start, // isey text syart s ae ga
                   children: const [
-                    A_DashboardHeader(),
-                    A_DashboardList(),
+                    aDashboardHeader(),
+                    ADashboardList(),
                     //tabbar(),
                   ],
                 ),

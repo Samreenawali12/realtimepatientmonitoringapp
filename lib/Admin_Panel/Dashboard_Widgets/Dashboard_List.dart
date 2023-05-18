@@ -7,14 +7,15 @@ import '../Pages/Admin_Page.dart';
 import '../Pages/Doctor_Page.dart';
 import '../Pages/Patient_Page.dart';
 
-class A_DashboardList extends StatefulWidget {
-  const A_DashboardList({Key? key}) : super(key: key);
+class ADashboardList extends StatefulWidget {
+  const ADashboardList({Key? key}) : super(key: key);
 
   @override
-  State<A_DashboardList> createState() => _A_DashboardListState();
+  State<ADashboardList> createState() => _ADashboardListState();
 }
 
-class _A_DashboardListState extends State<A_DashboardList> {
+// ignore: camel_case_types
+class _ADashboardListState extends State<ADashboardList> {
   String name = '';
   String address = '';
   String email = '';
@@ -53,17 +54,15 @@ class _A_DashboardListState extends State<A_DashboardList> {
             child: Card(
               color: Colors.transparent,
               elevation: 0,
-              child: Container(
-                child: Row(
-                  children: [
-                    const CircleAvatar(
-                      radius: 50,
-                      backgroundColor: Color.fromARGB(0, 51, 0, 75),
-                      backgroundImage: AssetImage("assets/Images/admin.webp"),
-                    ),
-                    name.text.xl.color(context.accentColor).make().p8(),
-                  ],
-                ),
+              child: Row(
+                children: [
+                  const CircleAvatar(
+                    radius: 50,
+                    backgroundColor: Color.fromARGB(0, 51, 0, 75),
+                    backgroundImage: AssetImage("assets/Images/admin.webp"),
+                  ),
+                  name.text.xl.color(context.accentColor).make().p8(),
+                ],
               ),
             )),
         Container(

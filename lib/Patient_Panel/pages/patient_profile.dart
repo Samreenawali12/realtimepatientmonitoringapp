@@ -73,155 +73,157 @@ class _PatientProfileState extends State<PatientProfile> {
         isScrollControlled: true,
         context: context,
         builder: (BuildContext ctx) {
-          return Padding(
-            padding: EdgeInsets.only(
-                top: 10,
-                left: 20,
-                right: 20,
-                bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null) {
-                      return "This field is required";
-                    } else if (!RegExp(
-                            '^([a-zA-Z]{2,}\\s[a-zA-Z]{1,}?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)')
-                        .hasMatch(value)) {
-                      return "Enter Valid Name";
-                    }
-                    return null;
-                  },
-                  controller: _P_NameController,
-                  decoration: const InputDecoration(labelText: 'Name'),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    Padding(
-                      padding: EdgeInsets.only(left: 4),
-                      child: Text(
-                        "Gender",
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 60, 1, 114)),
+          return SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: 10,
+                  left: 20,
+                  right: 20,
+                  bottom: MediaQuery.of(ctx).viewInsets.bottom + 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null) {
+                        return "This field is required";
+                      } else if (!RegExp(
+                              '^([a-zA-Z]{2,}\\s[a-zA-Z]{1,}?-?[a-zA-Z]{2,}\\s?([a-zA-Z]{1,})?)')
+                          .hasMatch(value)) {
+                        return "Enter Valid Name";
+                      }
+                      return null;
+                    },
+                    controller: _P_NameController,
+                    decoration: const InputDecoration(labelText: 'Name'),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: const [
+                      Padding(
+                        padding: EdgeInsets.only(left: 4),
+                        child: Text(
+                          "Gender",
+                          style: TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.bold,
+                              color: Color.fromARGB(255, 60, 1, 114)),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                RadioListTile(
-                  title: const Text("Male"),
-                  value: "Male",
-                  groupValue: radiovalue,
-                  onChanged: (value) {
-                    print(value.toString());
-                    setState(() {
-                      radiovalue = value!.toString();
-                    });
-                    print(radiovalue);
-                  },
-                ),
-                RadioListTile(
-                  title: const Text("Female"),
-                  value: "Female",
-                  groupValue: radiovalue,
-                  onChanged: (value) {
-                    setState(() {
-                      radiovalue = value!.toString();
-                    });
-                  },
-                ),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null) {
-                      return "This field is required";
-                    }
-                    return null;
-                  },
-                  controller: _P_AgeController,
-                  decoration: const InputDecoration(labelText: 'Age'),
-                ),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null) {
-                      return "This field is required";
-                    } else if (!RegExp(r'^[0][\d]{3}-[\d]{7}$')
-                        .hasMatch(value)) {
-                      return "invalid phone number";
-                    }
-                    return null;
-                  },
-                  controller: _P_PhoneNumberController,
-                  decoration: const InputDecoration(labelText: 'Phone Number'),
-                ),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null) {
-                      return "This field is required";
-                    } else if (!RegExp(r'^[0-9]{5}-[0-9]{7}-[0-9]$')
-                        .hasMatch(value)) {
-                      return "Invalid Cnic";
-                    }
-                    return null;
-                  },
-                  controller: _P_CnicController,
-                  decoration: const InputDecoration(labelText: 'Cnic'),
-                ),
-                TextFormField(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  validator: (value) {
-                    if (value == null) {
-                      return "This field is required";
-                    }
-                    return null;
-                  },
-                  controller: _P_AddressController,
-                  decoration: const InputDecoration(labelText: 'Address'),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                ElevatedButton(
-                  child: const Text('Update'),
-                  onPressed: () async {
-                    final String Name = _P_NameController.text;
-                    final String? Gender = radiovalue;
-                    final num? Age = num.tryParse(_P_AgeController.text);
-                    final String Phonenumber = _P_PhoneNumberController.text;
-                    final String Cnic = _P_CnicController.text;
-                    final String Address = _P_AddressController.text;
-                    User? user = FirebaseAuth.instance.currentUser;
-                    if (user != null) {
-                      await FirebaseFirestore.instance
-                          .collection("Patients")
-                          .doc(user.uid)
-                          .update({
-                        "P_Name": Name,
-                        "P_Gender": Gender,
-                        "P_Age": Age,
-                        "P_PhoneNumber": Phonenumber,
-                        "P_CNIC": Cnic,
-                        "P_Address": Address
+                    ],
+                  ),
+                  RadioListTile(
+                    title: const Text("Male"),
+                    value: "Male",
+                    groupValue: radiovalue,
+                    onChanged: (value) {
+                      print(value.toString());
+                      setState(() {
+                        radiovalue = value!.toString();
                       });
-                      _P_NameController.text = '';
-                      _P_AddressController.text = '';
-                      _P_PhoneNumberController.text = '';
-                      _P_AgeController.text = '';
-                      _P_GenderController.text = '';
-                      _P_CnicController.text = '';
-                      getData();
-                      Navigator.of(context).pop();
-                    }
-                  },
-                )
-              ],
+                      print(radiovalue);
+                    },
+                  ),
+                  RadioListTile(
+                    title: const Text("Female"),
+                    value: "Female",
+                    groupValue: radiovalue,
+                    onChanged: (value) {
+                      setState(() {
+                        radiovalue = value!.toString();
+                      });
+                    },
+                  ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null) {
+                        return "This field is required";
+                      }
+                      return null;
+                    },
+                    controller: _P_AgeController,
+                    decoration: const InputDecoration(labelText: 'Age'),
+                  ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null) {
+                        return "This field is required";
+                      } else if (!RegExp(r'^[0][\d]{3}-[\d]{7}$')
+                          .hasMatch(value)) {
+                        return "invalid phone number";
+                      }
+                      return null;
+                    },
+                    controller: _P_PhoneNumberController,
+                    decoration: const InputDecoration(labelText: 'Phone Number'),
+                  ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null) {
+                        return "This field is required";
+                      } else if (!RegExp(r'^[0-9]{5}-[0-9]{7}-[0-9]$')
+                          .hasMatch(value)) {
+                        return "Invalid Cnic";
+                      }
+                      return null;
+                    },
+                    controller: _P_CnicController,
+                    decoration: const InputDecoration(labelText: 'Cnic'),
+                  ),
+                  TextFormField(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    validator: (value) {
+                      if (value == null) {
+                        return "This field is required";
+                      }
+                      return null;
+                    },
+                    controller: _P_AddressController,
+                    decoration: const InputDecoration(labelText: 'Address'),
+                  ),
+                  // const SizedBox(
+                  //   height: 20,
+                  // ),
+                  ElevatedButton(
+                    child: const Text('Update'),
+                    onPressed: () async {
+                      final String Name = _P_NameController.text;
+                      final String? Gender = radiovalue;
+                      final num? Age = num.tryParse(_P_AgeController.text);
+                      final String Phonenumber = _P_PhoneNumberController.text;
+                      final String Cnic = _P_CnicController.text;
+                      final String Address = _P_AddressController.text;
+                      User? user = FirebaseAuth.instance.currentUser;
+                      if (user != null) {
+                        await FirebaseFirestore.instance
+                            .collection("Patients")
+                            .doc(user.uid)
+                            .update({
+                          "P_Name": Name,
+                          "P_Gender": Gender,
+                          "P_Age": Age,
+                          "P_PhoneNumber": Phonenumber,
+                          "P_CNIC": Cnic,
+                          "P_Address": Address
+                        });
+                        _P_NameController.text = '';
+                        _P_AddressController.text = '';
+                        _P_PhoneNumberController.text = '';
+                        _P_AgeController.text = '';
+                        _P_GenderController.text = '';
+                        _P_CnicController.text = '';
+                        getData();
+                        Navigator.of(context).pop();
+                      }
+                    },
+                  )
+                ],
+              ),
             ),
           );
         });

@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, unused_field, avoid_print, unused_local_variable
+
 import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -17,12 +19,13 @@ class Spo2Graph extends StatefulWidget {
 
 class _Spo2GraphState extends State<Spo2Graph> {
   int i = 0;
+  Timer? _timer;
   late List<LiveData> chartData = [];
   late ChartSeriesController _chartSeriesController;
   int timer = 10;
   //retrieve data
   _retrieveData() async {
-    Timer.periodic(const Duration(seconds: 1), (timer) async {
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) async {
       DatabaseReference ref =
           FirebaseDatabase.instance.ref("i8fCoT6I13P9JH0PbiYFQIFVZCF3/Spo2");
       DatabaseEvent event = await ref.once();
@@ -53,21 +56,27 @@ class _Spo2GraphState extends State<Spo2Graph> {
   }
 
   @override
+  void dispose() {
+    _timer!.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return SafeArea(
         child: Scaffold(
-             appBar: AppBar(
-            backgroundColor: Colors.white,
-            iconTheme: const IconThemeData(color: Colors.black),
-            title: Text(
-              "Real Time Oxygen Level",
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  color: context.accentColor),
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              iconTheme: const IconThemeData(color: Colors.black),
+              title: Text(
+                "Real Time Oxygen Level",
+                style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: context.accentColor),
+              ),
             ),
-          ),
             body: Column(
               children: [
                 Container(
@@ -83,7 +92,7 @@ class _Spo2GraphState extends State<Spo2Graph> {
                   ),
                 ),
                 Text(
-                  "$oxygen%",
+                  "${oxygen.value}%",
                   style: TextStyle(
                     fontSize: size.height / 40,
                     color: const Color.fromARGB(255, 65, 23, 165),

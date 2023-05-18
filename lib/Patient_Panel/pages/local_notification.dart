@@ -1,5 +1,5 @@
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/docRequest.dart';
-import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/requested_doc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 

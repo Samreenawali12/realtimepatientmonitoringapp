@@ -1,3 +1,5 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Chat_Pages/ChatRoom.dart';
 import 'package:dbtest/Patient_Panel/Patient_Dashboard.dart';
@@ -5,6 +7,7 @@ import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:dbtest/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:path_provider/path_provider.dart';
@@ -12,13 +15,21 @@ import 'dart:io';
 import 'package:open_file/open_file.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import '../Graphs/bpm_graph.dart';
+import '../Graphs/ecg_graph.dart';
+import '../Graphs/spo2_graph.dart';
+import '../Graphs/temp_graph.dart';
+
+// ignore: camel_case_types
 class P_Session extends StatefulWidget {
+  // ignore: non_constant_identifier_names, prefer_typing_uninitialized_variables
   final R_ID;
   const P_Session({Key? key, this.R_ID}) : super(key: key);
   @override
   State<P_Session> createState() => _P_Session();
 }
 
+// ignore: camel_case_types
 class _P_Session extends State<P_Session> {
   String docid = "";
   String docname = "";
@@ -28,7 +39,7 @@ class _P_Session extends State<P_Session> {
   User? patientID = FirebaseAuth.instance.currentUser!;
 
   void getOnGoingData() async {
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         //.doc(patientID.uid)
         .where('P_id', isEqualTo: patientID!.uid)
@@ -53,7 +64,7 @@ class _P_Session extends State<P_Session> {
 
   void getcloseData() async {
     User? DoctorID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         .where('R_UID', isEqualTo: ruid)
         .where('R_Status', isNotEqualTo: "Accepted")
@@ -198,7 +209,7 @@ class _P_Session extends State<P_Session> {
                                           const pw.EdgeInsets.only(left: 30),
                                       child: pw.Text(
                                         medication,
-                                        style: pw.TextStyle(
+                                        style: const pw.TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
@@ -228,7 +239,7 @@ class _P_Session extends State<P_Session> {
                                           const pw.EdgeInsets.only(left: 30),
                                       child: pw.Text(
                                         dosage,
-                                        style: pw.TextStyle(
+                                        style: const pw.TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
@@ -263,7 +274,7 @@ class _P_Session extends State<P_Session> {
                                           const pw.EdgeInsets.only(left: 30),
                                       child: pw.Text(
                                         frequency,
-                                        style: pw.TextStyle(
+                                        style: const pw.TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
@@ -293,7 +304,7 @@ class _P_Session extends State<P_Session> {
                                           const pw.EdgeInsets.only(left: 30),
                                       child: pw.Text(
                                         duration,
-                                        style: pw.TextStyle(
+                                        style: const pw.TextStyle(
                                           fontSize: 14,
                                         ),
                                       ),
@@ -307,10 +318,8 @@ class _P_Session extends State<P_Session> {
                           pw.Container(
                             padding: const pw.EdgeInsets.only(left: 300),
                             child: pw.Text(
-                              'Prescribed Date' +
-                                  ': ' +
-                                  prescribedAt.toString(),
-                              style: pw.TextStyle(
+                              'Prescribed Date: $prescribedAt',
+                              style: const pw.TextStyle(
                                 fontSize: 10,
                               ),
                             ),
@@ -321,7 +330,7 @@ class _P_Session extends State<P_Session> {
                             child: pw.RichText(
                               text: pw.TextSpan(
                                 children: [
-                                  pw.TextSpan(
+                                  const pw.TextSpan(
                                     text:
                                         "Thank you for using our service. We hope you get well soon.",
                                   ),
@@ -364,9 +373,9 @@ class _P_Session extends State<P_Session> {
             ),
           );
         }
-        return Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          child: const Text(
+        return const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 30),
+          child: Text(
               'No Prescription is prescribed yet, Please wait for the doctor to prescribe the medication.',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -411,141 +420,223 @@ class _P_Session extends State<P_Session> {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-              child: Container(
-                  color: Colors.white,
-                  child: Padding(
-                      padding: const EdgeInsets.all(10.0),
-                      child: Column(children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: size.height / 5,
-                              width: size.width / 2.5,
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    "Patient",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.indigo),
-                                  ),
-                                  Card(
-                                      color: Colors.indigo,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.center,
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          left: 40.0,
-                                                          top: 20.0,
-                                                          bottom: 20.0),
-                                                  child: Text(
-                                                    "$patname\n\nAge: 21",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            size.width / 25,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
+          body: Obx(
+            () => SingleChildScrollView(
+                child: Container(
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 5,
+                                width: size.width / 2.5,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "Patient",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.indigo),
+                                    ),
+                                    Card(
+                                        color: Colors.indigo,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 40.0,
+                                                            top: 20.0,
+                                                            bottom: 20.0),
+                                                    child: Text(
+                                                      "$patname\n\nAge: 21",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              size.width / 25,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    ),
                                                   ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              height: size.height / 5,
-                              width: size.width / 2.5,
-                              child: Column(
-                                children: [
-                                  const Text(
-                                    "Doctor",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.indigo),
-                                  ),
-                                  Card(
-                                      color: Colors.indigo,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  left: 40.0,
-                                                  top: 20.0,
-                                                  bottom: 20.0),
-                                              child: Text(
-                                                "$docname \n\n MBBS ",
-                                                style: TextStyle(
-                                                    fontSize: size.width / 25,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.white),
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
+                                          ],
+                                        )),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                          width: 10,
-                        ),
-                        const Divider(
-                          height: 30,
-                          color: Color.fromARGB(255, 120, 119, 119),
-                        ),
-                        Container(
-                          child: Column(
-                              //mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Patients Vitals",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
+                              SizedBox(
+                                height: size.height / 5,
+                                width: size.width / 2.5,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "Doctor",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.indigo),
+                                    ),
+                                    Card(
+                                        color: Colors.indigo,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 40.0,
+                                                    top: 20.0,
+                                                    bottom: 20.0),
+                                                child: Text(
+                                                  "$docname \n\n MBBS ",
+                                                  style: TextStyle(
+                                                      fontSize: size.width / 25,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        )),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 10,
+                            width: 10,
+                          ),
+                          const Divider(
+                            height: 30,
+                            color: Color.fromARGB(255, 120, 119, 119),
+                          ),
+                          Container(
+                            child: Column(
+                                //mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Patients Vitals",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                    color: Colors.white,
-                                    width: size.width / 1,
-                                    height: size.height / 3.2,
-                                    child: GridView.count(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 5,
-                                        mainAxisSpacing: 5,
-                                        childAspectRatio: (1 / .4),
-                                        children: <Widget>[
-                                          Container(
-                                            child: Card(
-                                              // elevation: 3,
+                                  Container(
+                                      color: Colors.white,
+                                      width: size.width / 1,
+                                      height: size.height / 3.2,
+                                      child: GridView.count(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 5,
+                                          mainAxisSpacing: 5,
+                                          childAspectRatio: (1 / .4),
+                                          children: <Widget>[
+                                            Container(
+                                              child: Card(
+                                                // elevation: 3,
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    // color: Colors.blue,
+                                                    child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 18.0),
+                                                      child: Text(
+                                                        " temperature: ${temprature.value}",
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                size.width / 22,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Graph(
+                                                      title: 'SensorsGraphs',
+                                                    ),
+                                                  ),
+                                                );
+
+                                                //AddRoute here
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    //color: MyTheme.creamColor,
+                                                    child: Column(
+                                                  children: const [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 20.0),
+                                                      child: Text(
+                                                        "Temp Graph",
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                            Card(
+                                              elevation: 3,
                                               color: Colors.white,
                                               clipBehavior: Clip.antiAlias,
                                               shape: RoundedRectangleBorder(
@@ -562,9 +653,9 @@ class _P_Session extends State<P_Session> {
                                                   Padding(
                                                     padding:
                                                         const EdgeInsets.only(
-                                                            top: 18.0),
+                                                            top: 20.0),
                                                     child: Text(
-                                                      " temperature: $temprature",
+                                                      "Heart Rate: ${BPM.value} bpm",
                                                       style: TextStyle(
                                                           fontSize:
                                                               size.width / 22,
@@ -575,296 +666,201 @@ class _P_Session extends State<P_Session> {
                                                 ],
                                               )),
                                             ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              //AddRoute here
-                                            },
-                                            child: Card(
-                                              color: Colors.white,
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: BorderSide(
-                                                      color: MyTheme
-                                                          .darkbluishColor,
-                                                      width: 2)),
-                                              child: Container(
-                                                  //color: MyTheme.creamColor,
-                                                  child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 20.0),
-                                                    child: Text(
-                                                      "Temp Graph",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const BPMGraph(
+                                                      title: 'BPM',
                                                     ),
+                                                    // Graph(
+                                                    //   title: 'SensorsGraphs',
+                                                    // ),
                                                   ),
-                                                ],
-                                              )),
-                                            ),
-                                          ),
-                                          Card(
-                                            elevation: 3,
-                                            color: Colors.white,
-                                            clipBehavior: Clip.antiAlias,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                side: BorderSide(
-                                                    color:
-                                                        MyTheme.darkbluishColor,
-                                                    width: 2)),
-                                            child: Container(
-                                                // color: Colors.blue,
-                                                child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 20.0),
-                                                  child: Text(
-                                                    "Heart Rate: $BPM bpm",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            size.width / 22,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              //AddRoute here
-                                            },
-                                            child: Card(
-                                              color: Colors.white,
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: BorderSide(
-                                                      color: MyTheme
-                                                          .darkbluishColor,
-                                                      width: 2)),
-                                              child: Container(
-                                                  //color: MyTheme.creamColor,
-                                                  child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 20.0),
-                                                    child: Text(
-                                                      "BPM Graph",
-                                                      style: TextStyle(
-                                                          fontSize:
-                                                              size.width / 22,
-                                                          fontWeight:
-                                                              FontWeight.bold),
+                                                );
+                                                //AddRoute here
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    //color: MyTheme.creamColor,
+                                                    child: Column(
+                                                  children: [
+                                                    Padding(
+                                                      padding:
+                                                          const EdgeInsets.only(
+                                                              top: 20.0),
+                                                      child: Text(
+                                                        "BPM Graph",
+                                                        style: TextStyle(
+                                                            fontSize:
+                                                                size.width / 22,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
                                                     ),
-                                                  ),
-                                                ],
-                                              )),
-                                            ),
-                                          ),
-                                          Card(
-                                            elevation: 3,
-                                            color: Colors.white,
-                                            clipBehavior: Clip.antiAlias,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                side: BorderSide(
-                                                    color:
-                                                        MyTheme.darkbluishColor,
-                                                    width: 2)),
-                                            child: Container(
-                                                // color: Colors.blue,
-                                                child: Column(
-                                              children: [
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 20.0),
-                                                  child: Text(
-                                                    "Oxygen Level: $oxygen %",
-                                                    style: TextStyle(
-                                                        fontSize:
-                                                            size.width / 22,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ),
-                                              ],
-                                            )),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              //AddRoute here
-                                            },
-                                            child: Card(
-                                              color: Colors.white,
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: BorderSide(
-                                                      color: MyTheme
-                                                          .darkbluishColor,
-                                                      width: 2)),
-                                              child: Container(
-                                                  //color: MyTheme.creamColor,
-                                                  child: Column(
-                                                children: [
-                                                  Padding(
-                                                    padding:
-                                                        const EdgeInsets.only(
-                                                            top: 20.0),
-                                                    child: Text(
-                                                      "SpO2 Graph",
-                                                      style: TextStyle(
-                                                          fontSize: 18,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )),
-                                            ),
-                                          ),
-                                        ])),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Card(
-                                    color: Colors.white,
-                                    clipBehavior: Clip.antiAlias,
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                        side: BorderSide(
-                                            color: MyTheme.darkbluishColor,
-                                            width: 2)),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                const SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                                const Align(
-                                                  alignment: Alignment.center,
-                                                  child: Padding(
-                                                    padding: EdgeInsets.only(
-                                                        top: 8.0,
-                                                        left: 100.0,
-                                                        bottom: 18.0),
-                                                    child: Text(
-                                                      "See ECG Graph",
-                                                      style: TextStyle(
-                                                          fontSize: 20,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          color: Colors.black),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ]),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                _buildPrescriptionButton(),
-                                const Divider(
-                                  height: 30,
-                                  color: Color.fromARGB(255, 120, 119, 119),
-                                ),
-                                const Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Have Questions?",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                Card(
-                                  color: Colors.indigo,
-                                  clipBehavior: Clip.antiAlias,
-                                  child: Container(
-                                      //color: MyTheme.creamColor,
-                                      child: Column(
-                                    children: [
-                                      const SizedBox(
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) => ChatRoom(
-                                                chatRoomId:
-                                                    docid + patientID!.uid,
-                                                user1: patientID!.uid,
-                                                user2: docid,
+                                                  ],
+                                                )),
                                               ),
                                             ),
-                                          );
-                                        },
-                                        child: const Text(
-                                          "  Go To Chat  ",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 17,
+                                            Card(
+                                              elevation: 3,
+                                              color: Colors.white,
+                                              clipBehavior: Clip.antiAlias,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(10),
+                                                  side: BorderSide(
+                                                      color: MyTheme
+                                                          .darkbluishColor,
+                                                      width: 2)),
+                                              child: Container(
+                                                  // color: Colors.blue,
+                                                  child: Column(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            top: 20.0),
+                                                    child: Text(
+                                                      "Oxygen Level: ${oxygen.value} %",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              size.width / 22,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Spo2Graph(
+                                                      title: 'Oxygen Level',
+                                                    ),
+                                                  ),
+                                                );
+                                                //AddRoute here
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    //color: MyTheme.creamColor,
+                                                    child: Column(
+                                                  children: const [
+                                                    Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 20.0),
+                                                      child: Text(
+                                                        "SpO2 Graph",
+                                                        style: TextStyle(
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                          ])),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ECGGraph(title: "ECG")),
+                                      );
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: BorderSide(
+                                              color: MyTheme.darkbluishColor,
+                                              width: 2)),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: const [
+                                                  SizedBox(
+                                                    height: 10,
+                                                    width: 10,
+                                                  ),
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 8.0,
+                                                          left: 100.0,
+                                                          bottom: 18.0),
+                                                      child: Text(
+                                                        "See ECG Graph",
+                                                        style: TextStyle(
+                                                            fontSize: 20,
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                            color:
+                                                                Colors.black),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ]),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                      const SizedBox(
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                    ],
-                                  )),
-                                ),
-                                const Divider(
-                                  height: 30,
-                                  color: Color.fromARGB(255, 120, 119, 119),
-                                ),
-                                const Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Close Session?",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
                                     ),
                                   ),
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Card(
+                                  _buildPrescriptionButton(),
+                                  const Divider(
+                                    height: 30,
+                                    color: Color.fromARGB(255, 120, 119, 119),
+                                  ),
+                                  const Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Have Questions?",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  Card(
                                     color: Colors.indigo,
                                     clipBehavior: Clip.antiAlias,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     child: Container(
                                         //color: MyTheme.creamColor,
                                         child: Column(
@@ -875,20 +871,19 @@ class _P_Session extends State<P_Session> {
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            FirebaseFirestore.instance
-                                                .collection("Requests")
-                                                .doc(ruid)
-                                                .update({
-                                              'R_Status': "completed",
-                                              'R_EndTime':
-                                                  DateTime.now().toString(),
-                                            });
-                                            Navigator.pop(context);
-
-                                            // Navigator.pushNamed(context, MyRoutes.DocDashR);
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatRoom(
+                                                  chatRoomId:
+                                                      docid + patientID!.uid,
+                                                  user1: patientID!.uid,
+                                                  user2: docid,
+                                                ),
+                                              ),
+                                            );
                                           },
                                           child: const Text(
-                                            "    Close    ",
+                                            "  Go To Chat  ",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -903,10 +898,71 @@ class _P_Session extends State<P_Session> {
                                       ],
                                     )),
                                   ),
-                                ),
-                              ]),
-                        ),
-                      ]))))),
+                                  const Divider(
+                                    height: 30,
+                                    color: Color.fromARGB(255, 120, 119, 119),
+                                  ),
+                                  const Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Close Session?",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Card(
+                                      color: Colors.indigo,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: Container(
+                                          //color: MyTheme.creamColor,
+                                          child: Column(
+                                        children: [
+                                          const SizedBox(
+                                            height: 10,
+                                            width: 10,
+                                          ),
+                                          GestureDetector(
+                                            onTap: () {
+                                              FirebaseFirestore.instance
+                                                  .collection("Requests")
+                                                  .doc(ruid)
+                                                  .update({
+                                                'R_Status': "completed",
+                                                'R_EndTime':
+                                                    DateTime.now().toString(),
+                                              });
+                                              Navigator.pop(context);
+
+                                              // Navigator.pushNamed(context, MyRoutes.DocDashR);
+                                            },
+                                            child: const Text(
+                                              "    Close    ",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 17,
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            height: 10,
+                                            width: 10,
+                                          ),
+                                        ],
+                                      )),
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        ])))),
+          )),
     );
   }
 }

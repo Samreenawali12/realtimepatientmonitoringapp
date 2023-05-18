@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import '../functions/auth.dart';
 import '../screens/signInScreen.dart';
-import 'Dashboard_Widgets/Dashboard_Home.dart';
-import 'Dashboard_Widgets/Navigation_drawer.dart' as myDrawer;
+import 'Dashboard_Widgets/dashboard_home.dart';
+import 'Dashboard_Widgets/navigation_drawer.dart' as mydrawer;
 import 'Pages/History_Page.dart';
 
-class A_DashboardPage extends StatefulWidget {
-  const A_DashboardPage({Key? key}) : super(key: key);
+// ignore: camel_case_types
+class aDashboardPage extends StatefulWidget {
+  const aDashboardPage({Key? key}) : super(key: key);
   @override
-  State<A_DashboardPage> createState() => _A_DashboardPageState();
+  State<aDashboardPage> createState() => _aDashboardPageState();
 }
 
-class _A_DashboardPageState extends State<A_DashboardPage> {
+// ignore: camel_case_types
+class _aDashboardPageState extends State<aDashboardPage> {
   int _selectedIndex = 0;
   void _onItemTapped(int index) {
     setState(() {
@@ -29,7 +31,7 @@ class _A_DashboardPageState extends State<A_DashboardPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
       ),
-      drawer: const myDrawer.NavigationDrawer(),
+      drawer: const mydrawer.NavigationDrawer(),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

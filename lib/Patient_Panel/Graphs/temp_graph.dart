@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, unused_field, avoid_print, unused_local_variable
+
 import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -89,7 +91,7 @@ class _GraphState extends State<Graph> {
                 ),
               ),
               Text(
-                "$temprature°F",
+                "${temprature.value}°F",
                 style: TextStyle(
                   fontSize: size.height / 40,
                   color: const Color.fromARGB(255, 65, 23, 165),

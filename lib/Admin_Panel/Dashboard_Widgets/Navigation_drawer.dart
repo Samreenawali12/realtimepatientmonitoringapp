@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Admin_Panel/Pages/Adminprofile.dart';
 import 'package:dbtest/Admin_Panel/Pages/History_Page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:velocity_x/velocity_x.dart';
 import '../../screens/signInScreen.dart';
 import '../Dashboard.dart';
+import '../Pages/admin_profile.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -19,10 +19,10 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   var adminname = "";
 
   void getData() async {
-    User? AdminID = FirebaseAuth.instance.currentUser!;
+    User? adminId = FirebaseAuth.instance.currentUser!;
     var vari = await FirebaseFirestore.instance
         .collection('Admin')
-        .doc(AdminID.uid)
+        .doc(adminId.uid)
         .get();
 
     setState(() {
@@ -34,8 +34,7 @@ class _NavigationDrawerState extends State<NavigationDrawer> {
   }
 
   @override
-  void initState() 
-  {
+  void initState() {
     getData();
     super.initState();
   }
@@ -106,7 +105,7 @@ Widget buildMenuItems(BuildContext context) {
         onTap: () {
           Navigator.of(context).pushReplacement(
             MaterialPageRoute(
-              builder: (context) => const A_DashboardPage(),
+              builder: (context) => const aDashboardPage(),
             ),
           );
         },
@@ -143,8 +142,8 @@ Widget buildMenuItems(BuildContext context) {
         leading: const Icon(Icons.logout_rounded),
         title: const Text("Logout"),
         onTap: () {
-          Navigator.pushReplacement(
-              context, MaterialPageRoute(builder: (context) => const SignInScreen()));
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const SignInScreen()));
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(

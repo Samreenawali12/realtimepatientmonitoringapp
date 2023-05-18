@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Patient_Panel/Patient_Dashboard.dart';
-import 'package:dbtest/Patient_Panel/pages/P_History.dart';
-import 'package:dbtest/Patient_Panel/pages/Patientprofile.dart';
-import 'package:dbtest/Patient_Panel/pages/UpdatePassword.dart';
+import 'package:dbtest/Patient_Panel/pages/p_history.dart';
+import 'package:dbtest/Patient_Panel/pages/patient_profile.dart';
+import 'package:dbtest/Patient_Panel/pages/update_password.dart';
 import 'package:dbtest/screens/signInScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -18,6 +18,7 @@ class PatientNavigationDrawer extends StatefulWidget {
 }
 
 class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
+  // ignore: unused_field
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   User? user = FirebaseAuth.instance.currentUser;
@@ -164,6 +165,7 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
             'P_Token': null,
           });
           authFunction().signOut();
+          // ignore: avoid_print
           print('Signed out');
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => const SignInScreen()));

@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/docRequest.dart';
 import 'package:dbtest/Doctor_Panel/passwordupdate/forgotpassword.dart';
-import 'package:dbtest/Patient_Panel/pages/AlarmPage.dart';
-import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/alarm_page.dart';
+import 'package:dbtest/Patient_Panel/pages/requested_doc.dart';
 import 'package:dbtest/firebase_options.dart';
 import 'package:dbtest/screens/doctor/doc_token.dart';
 import 'package:dbtest/screens/patient/P_Token.dart';
@@ -14,7 +14,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:velocity_x/velocity_x.dart';
-import 'Admin_Panel/Dashboard.dart';
+import 'Admin_Panel/dashboard.dart';
 import 'Doctor_Panel/pages/Doctor_Pages/docUpdate.dart';
 import 'Doctor_Panel/pages/Doctor_Pages/dochome.dart';
 import 'Doctor_Panel/pages/Doctor_Pages/doctorprofile.dart';
@@ -27,7 +27,9 @@ import 'functions/NotificationAPI.dart';
 
 //Create a [AndroidNotificationChannel] for heads up notifications
 AndroidNotificationChannel? channel;
+//plugins enable
 FlutterLocalNotificationsPlugin? flutterLocalNotificationsPlugin;
+//for context access
 final GlobalKey<NavigatorState> navigatorKey2 = GlobalKey<NavigatorState>();
 bool isNClicked = false;
 void main() async {
@@ -92,6 +94,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   String condition = message.data['Condition'];
   print(condition);
   print('Got a message whilst in the foreground!');
+  ///app minimize and terminated (urgent)
   var patientName = message.data['patientName'];
   if (patientID != null && condition != "no") {
     Future.delayed(const Duration(seconds: 10), () {
@@ -100,22 +103,6 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
       }
     });
   }
-  // const platform = MethodChannel('samples.flutter.dev/battery');
-  // var batteryLevel;
-  // print("Handling a background message: ${message.messageId}");
-  // try {
-  //   final int result = await platform.invokeMethod('getBatteryLevel');
-  //   batteryLevel = 'Battery level at $result % .';
-  // } on PlatformException catch (e) {
-  //   batteryLevel = "Failed to get battery level: '${e.message}'.";
-  // }
-  // navigatorKey2.currentState!.push(
-  //   MaterialPageRoute(
-  //     builder: (BuildContext context) {
-  //       return Alarm(message: message);
-  //     },
-  //   ),
-  // );
 }
 
 class MyApp2 extends StatefulWidget {
@@ -159,27 +146,24 @@ class _MyApp2State extends State<MyApp2> {
             ),
           );
         }
-      } 
-      else
-      { //on Patient Side to show accepted notification
+      } else {
+        //on Patient Side to show accepted notification
         var DoctorID = message.data['doctorID'];
         var DoctorName = message.data['doctorName'];
         if (DoctorID != null) {
           NotificationService().showNotification(
               1,
               DoctorName,
-              "$DoctorName has accepted your requested for\n assistance",
+              message.notification!.body.toString(),
               navigatorKey2.currentContext!,
               'patient');
         }
       }
     });
-    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) 
-    {
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
       var PatientID = message.data['patientID'];
       //app was minimized and then user taped on the notification
-      if (PatientID.toString().isNotEmpty) 
-      {
+      if (PatientID.toString().isNotEmpty) {
         isNClicked = true;
         navigatorKey2.currentState!.push(
           MaterialPageRoute(
@@ -204,14 +188,14 @@ class _MyApp2State extends State<MyApp2> {
     });
     FirebaseMessaging.instance.getInitialMessage().then((message) {
       //terminated then user taped on the notification
-      var PatientID = message!.data['patientID'];
-      if (PatientID.toString().isNotEmpty) {
+      var patientId = message!.data['patientID'];
+      if (patientId.toString().isNotEmpty) {
         isNClicked = true;
         navigatorKey2.currentState!.push(
           MaterialPageRoute(
             builder: (BuildContext context) {
               return docRequest(
-                patientID: PatientID,
+                patientID: patientId,
               );
             },
           ),
@@ -315,7 +299,7 @@ class _MyAppState extends State<MyApp> {
         return;
       } else if (admins.docs.isNotEmpty) {
         setState(() {
-          screen = const A_DashboardPage();
+          screen = const aDashboardPage();
         });
         return;
       }

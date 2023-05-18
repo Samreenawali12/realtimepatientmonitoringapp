@@ -6,8 +6,8 @@ class ChatRoom extends StatefulWidget {
   final user1, user2;
   final String chatRoomId;
 
-  ChatRoom(
-      {required this.chatRoomId, required this.user1, required this.user2});
+  const ChatRoom(
+      {super.key, required this.chatRoomId, required this.user1, required this.user2});
 
   @override
   State<ChatRoom> createState() => _ChatRoomState();
@@ -18,18 +18,19 @@ class _ChatRoomState extends State<ChatRoom> {
   String name = '';
 
   void getData() async {
-    User? user = await FirebaseAuth.instance.currentUser;
+    User? user = FirebaseAuth.instance.currentUser;
     // ignore: deprecated_member_use
     var vari = await FirebaseFirestore.instance
         .collection("Patients")
         .doc(user!.uid)
         .get();
-    if (mounted)
+    if (mounted) {
       setState(() {
         if (vari.data() != null) {
           name = vari.data()!['P_Name'].toString();
         }
       });
+    }
   }
 
   String appBarTitle = '';
@@ -49,7 +50,7 @@ class _ChatRoomState extends State<ChatRoom> {
     if (docName.data() != null) {
       return 'Dr. ${docName.data()!['D_Name'].toString()}';
     } else {
-      return '${patName.data()!['P_Name'].toString()}';
+      return patName.data()!['P_Name'].toString();
     }
   }
 
@@ -100,7 +101,7 @@ class _ChatRoomState extends State<ChatRoom> {
       appBar: AppBar(
         title: Text(
           appBarTitle,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 25,
             fontWeight: FontWeight.bold,
@@ -218,13 +219,13 @@ class _ChatRoomState extends State<ChatRoom> {
             height: size.height / 13,
             width: size.width,
             alignment: Alignment.center,
-            child: Container(
+            child: SizedBox(
               height: size.height / 15,
               width: size.width / 1.1,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Container(
+                  SizedBox(
                     height: size.height / 16,
                     width: size.width / 1.28,
                     child: TextField(

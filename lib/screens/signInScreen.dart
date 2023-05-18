@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Admin_Panel/Dashboard.dart';
+import 'package:dbtest/Admin_Panel/dashboard.dart';
 import 'package:dbtest/constantfiles.dart';
 import 'package:dbtest/screens/patient/signup_p.dart';
 import 'package:dbtest/reuseable_widgets/reuseable_widget.dart';
@@ -243,7 +243,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const A_DashboardPage()));
+                              builder: (context) => const aDashboardPage()));
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(

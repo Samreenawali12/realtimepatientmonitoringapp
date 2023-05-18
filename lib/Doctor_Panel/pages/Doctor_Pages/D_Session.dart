@@ -1,10 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Chat_Pages/ChatRoom.dart';
 import 'package:dbtest/Doctor_Panel/pages/Doctor_Pages/dochome.dart';
+import 'package:dbtest/Patient_Panel/Graphs/bpm_graph.dart';
+import 'package:dbtest/Patient_Panel/Graphs/spo2_graph.dart';
+import 'package:dbtest/Patient_Panel/Graphs/temp_graph.dart';
 import 'package:dbtest/Patient_Panel/pages/vitals.dart';
+import 'package:dbtest/constantfiles.dart';
 import 'package:dbtest/theme.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
+import '../../../Patient_Panel/Graphs/ecg_graph.dart';
 // import 'package:flutter/services.dart';
 
 class D_Session extends StatefulWidget {
@@ -19,6 +26,7 @@ class _D_Session extends State<D_Session> {
   bool _prescriptionAdded = false;
   String docid = "";
   String docname = "";
+  String Pname = "";
   String patId = "";
   String rstatus = "";
   String ruid = "";
@@ -78,7 +86,7 @@ class _D_Session extends State<D_Session> {
 
       // Close the pop-up form
       Navigator.of(context).pop();
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text("Prescrption has been added !"),
         duration: Duration(seconds: 6),
         backgroundColor: Colors.blue,
@@ -160,7 +168,7 @@ class _D_Session extends State<D_Session> {
   }
 
   void getOnGoingData() async {
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         .where('D_id', isEqualTo: DoctorID!.uid)
         .where('R_Status', isEqualTo: "Accepted")
@@ -170,6 +178,7 @@ class _D_Session extends State<D_Session> {
         if (vari.docs.isNotEmpty) {
           docid = vari.docs[0]['D_id'].toString();
           patId = vari.docs[0]['P_id'].toString();
+          Pname = vari.docs[0]['P_Name'].toString();
           docname = vari.docs[0]['D_Name'].toString();
           rstatus = vari.docs[0]['R_Status'].toString();
           ruid = vari.docs[0]['R_UID'].toString();
@@ -182,7 +191,7 @@ class _D_Session extends State<D_Session> {
 
   void getcloseData() async {
     User? DoctorID = FirebaseAuth.instance.currentUser!;
-    var vari = await FirebaseFirestore.instance
+    var vari = FirebaseFirestore.instance
         .collection('Requests')
         .where('R_UID', isEqualTo: ruid)
         .where('R_Status', isNotEqualTo: "Accepted")
@@ -191,7 +200,7 @@ class _D_Session extends State<D_Session> {
       if (vari.docs.isNotEmpty) {
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => DocHome(),
+            builder: (context) => const DocHome(),
           ),
         );
       }
@@ -215,7 +224,7 @@ class _D_Session extends State<D_Session> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: Colors.white,
-            iconTheme: IconThemeData(color: Colors.black),
+            iconTheme: const IconThemeData(color: Colors.black),
             title: Align(
               alignment: Alignment.topLeft,
               child: Text(
@@ -227,209 +236,224 @@ class _D_Session extends State<D_Session> {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-              child: Container(
-                  color: Colors.white,
-                  child: Padding(
-                      padding: const EdgeInsets.all(15.0),
-                      child: Column(children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Container(
-                              height: size.height / 5,
-                              width: size.width / 2.5,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Patient",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.indigo),
-                                  ),
-                                  Card(
-                                      color: Colors.indigo,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  "  Name:  ",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                Text(
-                                                  widget.patientInfo!
-                                                      .data()!['P_Name'],
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                SizedBox(
-                                                  height: 7,
-                                                  width: 7,
-                                                ),
-                                                Text(
-                                                  "  Age:  ",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                Text(
-                                                  "   21 ",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                              ],
+          body: Obx(
+            () => SingleChildScrollView(
+                child: Container(
+                    color: Colors.white,
+                    child: Padding(
+                        padding: const EdgeInsets.all(15.0),
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(
+                                height: size.height / 5,
+                                width: size.width / 2.5,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "Patient",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.indigo),
+                                    ),
+                                    Card(
+                                        color: Colors.indigo,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 40.0,
+                                                            top: 15.0,
+                                                            bottom: 10.0),
+                                                    child: Text(
+                                                      "$Pname\n\nAge: 21",
+                                                      style: TextStyle(
+                                                          fontSize:
+                                                              size.width / 25,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.white),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
+                                          ],
+                                        )),
+                                  ],
+                                ),
                               ),
-                            ),
-                            Container(
-                              height: size.height / 5,
-                              width: size.width / 2.5,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    "Doctor",
-                                    style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.indigo),
-                                  ),
-                                  Card(
-                                      color: Colors.indigo,
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(10),
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Container(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  "  Name:  ",
+                              SizedBox(
+                                height: size.height / 5,
+                                width: size.width / 2.8,
+                                child: Column(
+                                  children: [
+                                    const Text(
+                                      "Doctor",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.indigo),
+                                    ),
+                                    Card(
+                                        color: Colors.indigo,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                        ),
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              child: Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 40.0,
+                                                    top: 15.0,
+                                                    bottom: 10.0),
+                                                child: Text(
+                                                  "Dr. $Dname \n\n MBBS",
                                                   style: TextStyle(
-                                                      fontSize: 16,
+                                                      fontSize: size.width / 25,
                                                       fontWeight:
                                                           FontWeight.bold,
                                                       color: Colors.white),
                                                 ),
-                                                Text(
-                                                  "  Samreena Wali  ",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                SizedBox(
-                                                  height: 7,
-                                                  width: 7,
-                                                ),
-                                                Text(
-                                                  "  Age:  ",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                Text(
-                                                  "   21 ",
-                                                  style: TextStyle(
-                                                      fontSize: 16,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.white),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                              ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
-                                      )),
-                                ],
+                                          ],
+                                        )),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                          width: 10,
-                        ),
-                        Divider(
-                          height: 30,
-                          color: Color.fromARGB(255, 120, 119, 119),
-                        ),
-                        Container(
-                          child: Column(
-                              //mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Patients Vitals",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 30,
+                            ],
+                          ),
+                          const SizedBox(
+                            height: 5,
+                            width: 10,
+                          ),
+                          const Divider(
+                            height: 30,
+                            color: Color.fromARGB(255, 209, 114, 114),
+                          ),
+                          Container(
+                            child: Column(
+                                //mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  const Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Patients Vitals",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 30,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Container(
-                                    color: Colors.white,
-                                    width: size.width / 1,
-                                    height: size.height / 3.2,
-                                    child: GridView.count(
-                                        crossAxisCount: 2,
-                                        crossAxisSpacing: 5,
-                                        mainAxisSpacing: 5,
-                                        childAspectRatio: (1 / .4),
-                                        children: <Widget>[
-                                          Container(
-                                            child: Card(
-                                              // elevation: 3,
+                                  Container(
+                                      color: Colors.white,
+                                      width: size.width / 1,
+                                      height: size.height / 2.6,
+                                      child: GridView.count(
+                                          crossAxisCount: 2,
+                                          crossAxisSpacing: 5,
+                                          mainAxisSpacing: 5,
+                                          childAspectRatio: (1 / .4),
+                                          children: <Widget>[
+                                            Container(
+                                              child: Card(
+                                                // elevation: 3,
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    // color: Colors.blue,
+                                                    child: Column(
+                                                  children: [
+                                                    const SizedBox(
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                    const Text(
+                                                      "Temperature: ",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                    Text(temprature.value,
+                                                        style: const TextStyle(
+                                                            fontSize: 14,
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .normal)),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Graph(
+                                                      title: 'SensorsGraphs',
+                                                    ),
+                                                  ),
+                                                );
+                                                //AddRoute here
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    //color: MyTheme.creamColor,
+                                                    child: Column(
+                                                  children: const [
+                                                    SizedBox(
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      "See Graph",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                            Card(
+                                              elevation: 3,
                                               color: Colors.white,
                                               clipBehavior: Clip.antiAlias,
                                               shape: RoundedRectangleBorder(
@@ -443,31 +467,72 @@ class _D_Session extends State<D_Session> {
                                                   // color: Colors.blue,
                                                   child: Column(
                                                 children: [
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                     width: 10,
                                                   ),
-                                                  Text(
-                                                    "$temprature",
+                                                  const Text(
+                                                    "Heart Rate:",
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
-                                                  Text(temprature,
-                                                      style: TextStyle(
+                                                  Text(BPM.value,
+                                                      style: const TextStyle(
                                                           fontSize: 14,
                                                           fontWeight: FontWeight
                                                               .normal)),
                                                 ],
                                               )),
                                             ),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              //AddRoute here
-                                            },
-                                            child: Card(
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const BPMGraph(
+                                                      title: 'BPM',
+                                                    ),
+                                                    // Graph(
+                                                    //   title: 'SensorsGraphs',
+                                                    // ),
+                                                  ),
+                                                );
+                                                //AddRoute here
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    //color: MyTheme.creamColor,
+                                                    child: Column(
+                                                  children: const [
+                                                    SizedBox(
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      "See Graph",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                            Card(
+                                              elevation: 3,
                                               color: Colors.white,
                                               clipBehavior: Clip.antiAlias,
                                               shape: RoundedRectangleBorder(
@@ -478,372 +543,178 @@ class _D_Session extends State<D_Session> {
                                                           .darkbluishColor,
                                                       width: 2)),
                                               child: Container(
-                                                  //color: MyTheme.creamColor,
+                                                  // color: Colors.blue,
                                                   child: Column(
                                                 children: [
-                                                  SizedBox(
+                                                  const SizedBox(
                                                     height: 10,
                                                     width: 10,
                                                   ),
-                                                  Text(
-                                                    "See Graph",
+                                                  const Text(
+                                                    "Oxygen Level:",
                                                     style: TextStyle(
                                                         fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.bold),
                                                   ),
+                                                  Text(oxygen.value,
+                                                      style: const TextStyle(
+                                                          fontSize: 14,
+                                                          fontWeight: FontWeight
+                                                              .normal)),
                                                 ],
                                               )),
                                             ),
-                                          ),
-                                          Card(
-                                            elevation: 3,
-                                            color: Colors.white,
-                                            clipBehavior: Clip.antiAlias,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                side: BorderSide(
-                                                    color:
-                                                        MyTheme.darkbluishColor,
-                                                    width: 2)),
-                                            child: Container(
-                                                // color: Colors.blue,
-                                                child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  "Heart Rate:",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(BPM,
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ],
-                                            )),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              //AddRoute here
-                                            },
-                                            child: Card(
-                                              color: Colors.white,
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: BorderSide(
-                                                      color: MyTheme
-                                                          .darkbluishColor,
-                                                      width: 2)),
-                                              child: Container(
-                                                  //color: MyTheme.creamColor,
-                                                  child: Column(
-                                                children: [
+                                            InkWell(
+                                              onTap: () {
+                                                 Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const Spo2Graph(
+                                                      title: 'Oxygen Level',
+                                                    ),
+                                                  ),
+                                                );
+                                                //AddRoute here
+                                              },
+                                              child: Card(
+                                                color: Colors.white,
+                                                clipBehavior: Clip.antiAlias,
+                                                shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                    side: BorderSide(
+                                                        color: MyTheme
+                                                            .darkbluishColor,
+                                                        width: 2)),
+                                                child: Container(
+                                                    //color: MyTheme.creamColor,
+                                                    child: Column(
+                                                  children: const [
+                                                    SizedBox(
+                                                      height: 10,
+                                                      width: 10,
+                                                    ),
+                                                    Text(
+                                                      "See Graph",
+                                                      style: TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ],
+                                                )),
+                                              ),
+                                            ),
+                                          ])),
+                                  InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ECGGraph(title: "ECG")),
+                                      );
+                                    },
+                                    child: Card(
+                                      color: Colors.white,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(10),
+                                          side: BorderSide(
+                                              color: MyTheme.darkbluishColor,
+                                              width: 2)),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: const [
                                                   SizedBox(
                                                     height: 10,
                                                     width: 10,
                                                   ),
-                                                  Text(
-                                                    "See Graph",
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
+                                                  Align(
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      "                     See ECG Graph",
+                                                      style: TextStyle(
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black),
+                                                    ),
                                                   ),
-                                                ],
-                                              )),
-                                            ),
-                                          ),
-                                          Card(
-                                            elevation: 3,
-                                            color: Colors.white,
-                                            clipBehavior: Clip.antiAlias,
-                                            shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                                side: BorderSide(
-                                                    color:
-                                                        MyTheme.darkbluishColor,
-                                                    width: 2)),
-                                            child: Container(
-                                                // color: Colors.blue,
-                                                child: Column(
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                                Text(
-                                                  "Oxygen Level:",
-                                                  style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Text(oxygen,
-                                                    style: TextStyle(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.normal)),
-                                              ],
-                                            )),
-                                          ),
-                                          InkWell(
-                                            onTap: () {
-                                              //AddRoute here
-                                            },
-                                            child: Card(
-                                              color: Colors.white,
-                                              clipBehavior: Clip.antiAlias,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(10),
-                                                  side: BorderSide(
-                                                      color: MyTheme
-                                                          .darkbluishColor,
-                                                      width: 2)),
-                                              child: Container(
-                                                  //color: MyTheme.creamColor,
-                                                  child: Column(
-                                                children: [
                                                   SizedBox(
                                                     height: 10,
                                                     width: 10,
                                                   ),
-                                                  Text(
-                                                    "See Graph",
-                                                    style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                ],
-                                              )),
-                                            ),
+                                                ]),
                                           ),
-                                        ])),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Card(
-                                    color: Colors.white,
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  const Divider(
+                                    height: 30,
+                                    color: Color.fromARGB(255, 120, 119, 119),
+                                  ),
+                                  Card(
+                                    color: Colors.indigo,
                                     clipBehavior: Clip.antiAlias,
                                     shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(10),
                                         side: BorderSide(
                                             color: MyTheme.darkbluishColor,
                                             width: 2)),
-                                    child: Row(
-                                      children: [
-                                        Container(
-                                          child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                                Align(
-                                                  alignment: Alignment.center,
-                                                  child: Text(
-                                                    "                     See ECG Graph",
-                                                    style: TextStyle(
-                                                        fontSize: 20,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.black),
-                                                  ),
-                                                ),
-                                                SizedBox(
-                                                  height: 10,
-                                                  width: 10,
-                                                ),
-                                              ]),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                Divider(
-                                  height: 30,
-                                  color: Color.fromARGB(255, 120, 119, 119),
-                                ),
-                                Card(
-                                  color: Colors.indigo,
-                                  clipBehavior: Clip.antiAlias,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      side: BorderSide(
-                                          color: MyTheme.darkbluishColor,
-                                          width: 2)),
-                                  child: Container(
-                                      //color: MyTheme.creamColor,
-                                      child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          if (_prescriptionAdded == false) {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return showPrescriptionDialog();
-                                              },
-                                            );
-                                          } else {
-                                            showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return AlertDialog(
-                                                  title: const Text(
-                                                      'Prescription Already Added'),
-                                                  content: const Text(
-                                                      'You have already added prescription for this patient, Start a new session to add new prescription.'),
-                                                  actions: <Widget>[
-                                                    TextButton(
-                                                      child: const Text('OK'),
-                                                      onPressed: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                    ),
-                                                  ],
-                                                );
-                                              },
-                                            );
-                                          }
-                                        },
-                                        child: const Text(
-                                          "  Write Prescription  ",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                    ],
-                                  )),
-                                ),
-                                Divider(
-                                  height: 30,
-                                  color: Color.fromARGB(255, 120, 119, 119),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Have Questions?",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                Card(
-                                  color: Colors.indigo,
-                                  clipBehavior: Clip.antiAlias,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                      side: BorderSide(
-                                          color: MyTheme.darkbluishColor,
-                                          width: 2)),
-                                  child: Container(
-                                      //color: MyTheme.creamColor,
-                                      child: Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                              builder: (context) => ChatRoom(
-                                                chatRoomId: docid + patId,
-                                                user1: docid,
-                                                user2: patId,
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                        child: const Text(
-                                          "  Go To Chat  ",
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20,
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height: 10,
-                                        width: 10,
-                                      ),
-                                    ],
-                                  )),
-                                ),
-                                Divider(
-                                  height: 30,
-                                  color: Color.fromARGB(255, 120, 119, 119),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "Close Session?",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ),
-                                InkWell(
-                                  onTap: () {},
-                                  child: Card(
-                                    color: Colors.indigo,
-                                    clipBehavior: Clip.antiAlias,
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
                                     child: Container(
                                         //color: MyTheme.creamColor,
                                         child: Column(
                                       children: [
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                           width: 10,
                                         ),
                                         GestureDetector(
                                           onTap: () {
-                                            FirebaseFirestore.instance
-                                                .collection("Requests")
-                                                .doc(ruid)
-                                                .update({
-                                              'R_Status': "completed",
-                                              'R_EndTime':
-                                                  DateTime.now().toString(),
-                                            });
+                                            if (_prescriptionAdded == false) {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return showPrescriptionDialog();
+                                                },
+                                              );
+                                            } else {
+                                              showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return AlertDialog(
+                                                    title: const Text(
+                                                        'Prescription Already Added'),
+                                                    content: const Text(
+                                                        'You have already added prescription for this patient, Start a new session to add new prescription.'),
+                                                    actions: <Widget>[
+                                                      TextButton(
+                                                        child: const Text('OK'),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                        },
+                                                      ),
+                                                    ],
+                                                  );
+                                                },
+                                              );
+                                            }
                                           },
                                           child: const Text(
-                                            "Close",
+                                            "  Write Prescription  ",
                                             style: TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,
@@ -851,17 +722,134 @@ class _D_Session extends State<D_Session> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 10,
                                           width: 10,
                                         ),
                                       ],
                                     )),
                                   ),
-                                ),
-                              ]),
-                        ),
-                      ]))))),
+                                  const Divider(
+                                    height: 30,
+                                    color: Color.fromARGB(255, 120, 119, 119),
+                                  ),
+                                  const Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Have Questions?",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  Card(
+                                    color: Colors.indigo,
+                                    clipBehavior: Clip.antiAlias,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                        side: BorderSide(
+                                            color: MyTheme.darkbluishColor,
+                                            width: 2)),
+                                    child: Container(
+                                        //color: MyTheme.creamColor,
+                                        child: Column(
+                                      children: [
+                                        const SizedBox(
+                                          height: 10,
+                                          width: 10,
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Navigator.of(context).push(
+                                              MaterialPageRoute(
+                                                builder: (context) => ChatRoom(
+                                                  chatRoomId: docid + patId,
+                                                  user1: docid,
+                                                  user2: patId,
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: const Text(
+                                            "  Go To Chat  ",
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 10,
+                                          width: 10,
+                                        ),
+                                      ],
+                                    )),
+                                  ),
+                                  const Divider(
+                                    height: 30,
+                                    color: Color.fromARGB(255, 120, 119, 119),
+                                  ),
+                                  const Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "Close Session?",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                  ),
+                                  InkWell(
+                                    onTap: () {},
+                                    child: Card(
+                                      color: Colors.indigo,
+                                      clipBehavior: Clip.antiAlias,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(10),
+                                      ),
+                                      child: SizedBox(
+                                          width: size.width / 6,
+                                          //color: MyTheme.creamColor,
+                                          child: Column(
+                                            children: [
+                                              const SizedBox(
+                                                height: 10,
+                                                width: 10,
+                                              ),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  FirebaseFirestore.instance
+                                                      .collection("Requests")
+                                                      .doc(ruid)
+                                                      .update({
+                                                    'R_Status': "completed",
+                                                    'R_EndTime': DateTime.now()
+                                                        .toString(),
+                                                  });
+                                                },
+                                                child: const Text(
+                                                  "Close",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 17,
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(
+                                                height: 10,
+                                                width: 10,
+                                              ),
+                                            ],
+                                          )),
+                                    ),
+                                  ),
+                                ]),
+                          ),
+                        ])))),
+          )),
     );
   }
 }

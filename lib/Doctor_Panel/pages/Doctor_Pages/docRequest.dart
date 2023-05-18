@@ -318,7 +318,8 @@ class _docRequestState extends State<docRequest> {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              RequestDocs[index]["P_Name"].toString()
+                                              RequestDocs[index]["P_Name"]
+                                                  .toString()
                                                   .text
                                                   .bold
                                                   .xl2
@@ -327,7 +328,8 @@ class _docRequestState extends State<docRequest> {
                                                   .px8()
                                                   .pOnly(top: 4),
                                               ElevatedButton(
-                                                child: const Text('Accept Request'),
+                                                child: const Text(
+                                                    'Accept Request'),
                                                 onPressed: () async {
                                                   var PatientId =
                                                       RequestDocs[index]["P_id"]
@@ -369,7 +371,7 @@ class _docRequestState extends State<docRequest> {
                                                           doctorId: uId,
                                                           doctorName: name);
                                                     }
-                                                    
+
                                                     User? DoctorID =
                                                         FirebaseAuth.instance
                                                             .currentUser!;
@@ -403,8 +405,9 @@ class _docRequestState extends State<docRequest> {
                                                       top: size.width / 14)),
                                               ElevatedButton(
                                                 style: ElevatedButton.styleFrom(
-                                                  backgroundColor: const Color.fromARGB(
-                                                      255, 185, 0, 0),
+                                                  backgroundColor:
+                                                      const Color.fromARGB(
+                                                          255, 185, 0, 0),
                                                   //onPrimary: Colors.black,
                                                 ),
                                                 onPressed: () async {
@@ -416,6 +419,26 @@ class _docRequestState extends State<docRequest> {
                                                     'R_EndTime': DateTime.now()
                                                         .toString(),
                                                   });
+                                                  var vari =
+                                                      await FirebaseFirestore
+                                                          .instance
+                                                          .collection(
+                                                              'Patients')
+                                                          .doc(patid)
+                                                          .get();
+                                                  if (vari.data()!.isNotEmpty) {
+                                                    ptoken = vari
+                                                        .data()!['P_Token']
+                                                        .toString();
+                                                  }
+                                                  sendNotifcation(
+                                                      title: name,
+                                                      message:
+                                                          "Doctor has cancelled your request",
+                                                      token: ptoken,
+                                                      doctorId: uId,
+                                                      doctorName: name);
+
                                                   Navigator.of(context)
                                                       .pushReplacement(
                                                     MaterialPageRoute(

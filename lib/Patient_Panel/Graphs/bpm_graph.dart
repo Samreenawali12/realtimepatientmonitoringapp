@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, unused_field, unused_local_variable
+
 import 'package:dbtest/Patient_Panel/pages/vitals.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +12,7 @@ class BPMGraph extends StatefulWidget {
   const BPMGraph({Key? key, required this.title}) : super(key: key);
   final String title;
   @override
+  // ignore: library_private_types_in_public_api
   _BPMGraphState createState() => _BPMGraphState();
 }
 
@@ -86,7 +89,7 @@ class _BPMGraphState extends State<BPMGraph> {
                   ),
                 ),
                 Text(
-                  "$BPM - Beats Per Minute",
+                  "${BPM.value} - Beats Per Minute",
                   style: TextStyle(
                     fontSize: size.height / 40,
                     color: const Color.fromARGB(255, 65, 23, 165),

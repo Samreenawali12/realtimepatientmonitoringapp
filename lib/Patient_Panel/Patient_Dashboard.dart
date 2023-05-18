@@ -1,10 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dbtest/Patient_Panel/pages/P_History.dart';
-import 'package:dbtest/Patient_Panel/pages/Requesteddoc.dart';
+import 'package:dbtest/Patient_Panel/pages/p_history.dart';
+import 'package:dbtest/Patient_Panel/pages/requested_doc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'Dashboard_Widgets/Dashboard_List.dart';
-import 'Dashboard_Widgets/Navigation_drawer.dart';
+import 'Dashboard_Widgets/dashboard_list.dart';
+import 'Dashboard_Widgets/navigation_drawer.dart';
 
 class PatientDashboardPage extends StatefulWidget {
   const PatientDashboardPage({Key? key}) : super(key: key);

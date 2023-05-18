@@ -1,6 +1,6 @@
 
-import 'package:dbtest/Patient_Panel/pages/CancelledRequests.dart';
-import 'package:dbtest/Patient_Panel/pages/CompletedRequests.dart';
+import 'package:dbtest/Patient_Panel/pages/cancelled_requests.dart';
+import 'package:dbtest/Patient_Panel/pages/completed_requests.dart';
 import 'package:flutter/material.dart';
 
 class P_History extends StatefulWidget {
