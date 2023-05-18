@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dbtest/Patient_Panel/Patient_Dashboard.dart';
 import 'package:dbtest/Patient_Panel/pages/p_history.dart';
 import 'package:dbtest/Patient_Panel/pages/patient_profile.dart';
+import 'package:dbtest/Patient_Panel/pages/sensor_data_page.dart';
+import 'package:dbtest/Patient_Panel/pages/sensorguide.dart';
 import 'package:dbtest/Patient_Panel/pages/update_password.dart';
 import 'package:dbtest/screens/signInScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -117,11 +119,7 @@ class _PatientNavigationDrawerState extends State<PatientNavigationDrawer> {
           );
         },
       ),
-      ListTile(
-        leading: const Icon(Icons.notifications_outlined),
-        title: const Text("ALerts"),
-        onTap: () {},
-      ),
+     
       ListTile(
         leading: const Icon(Icons.people_rounded),
         title: const Text("Update profile"),
